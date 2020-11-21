@@ -2,12 +2,14 @@
   Script for data and calculations related to planets / moons / suns
 
   Variables:
-    a:  semi-major axis
-    b:  semi-minor axis
-    e:  eccentricity
-    r:  radius
-    m:  mass
-    au: astronomical units
+    a:      semi-major axis
+    b:      semi-minor axis
+    e:      eccentricity
+    r:      radius
+    m:      mass
+    au:     astronomical units
+    angle:  angle
+    speed:  speed in (earth ratio)
 */ 
 
 function getPerihelion(planet)
@@ -38,7 +40,7 @@ function getTriangleArea(x1, y1, x2, y2, x3, y3)
 
 sun = {
   m: 1.989,
-  r: 40,
+  r: 80,
   color: "#FFDD00"
 }
 
