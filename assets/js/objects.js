@@ -19,18 +19,21 @@ function getAphelion(planet)
 function getAstronomicalUnit(planet)
 {return planet.a / earth.a;}
 
+function getEarthSpeedRatio(planet)
+{return Math.sqrt((earth.a / planet.a) ** 3);}
+
 function getSemiMajorAxis(planet)
 {return (getPerihelion(planet) + getAphelion(planet)) / 2;}
 
 function getSemiMinorAxis(planet)
-{return (planet.a * Math.sqrt(1 - (planet.e * planet.e)));}
+{return planet.a * Math.sqrt(1 - (planet.e * planet.e));}
 
 function getFocusPoint(planet)
-{return (Math.sqrt((planet.a * planet.a) - (planet.b * planet.b)));}
+{return Math.sqrt((planet.a * planet.a) - (planet.b * planet.b));}
 
 function getTriangleArea(x1, y1, x2, y2, x3, y3)
 {
-  return (0.5 * Math.abs((x1 * (y2 - y3)) + (x2 * (y3 - y1)) + (x3 * (y1 - y2))));
+  return 0.5 * Math.abs((x1 * (y2 - y3)) + (x2 * (y3 - y1)) + (x3 * (y1 - y2)));
 }
 
 sun = {

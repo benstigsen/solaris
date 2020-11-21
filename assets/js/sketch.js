@@ -1,7 +1,7 @@
-const WIDTH   = window.innerWidth - 50;
-const HEIGHT  = window.innerHeight - 50;
-const CENTER  = new Point(WIDTH / 2, HEIGHT / 2);
-const SCALE   = 1_496_000;
+const WIDTH             = window.innerWidth - 50;
+const HEIGHT            = window.innerHeight - 50;
+const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
+const ANGLE_INCREASE    = 0.001;
 
 // Function to handle setup
 function setup()
@@ -14,8 +14,9 @@ function setup()
   for (let i = 0; i < planets.length; i++)
   {
     let planet = planets[i];
-    planet.b = getSemiMinorAxis(planets[i]);
-    planet.focus = getFocusPoint(planets[i]);
+    planet.b = getSemiMinorAxis(planet);
+    planet.focus = getFocusPoint(planet);
+    planet.speed = getEarthSpeedRatio(planet);
     planet.angle = 0.0;
     planet.x = planet.a;
     planet.y = 0;
@@ -30,12 +31,13 @@ function update(dt)
   for (let i = 0; i < planets.length; i++)
   {
     let planet = planets[i];
+
     let angle = planet.angle;
     let a = planet.a;
     let e = planet.e;
     let focus = planet.focus;
 
-    angle += 0.001 * dt;
+    angle += ((ANGLE_INCREASE * planet.speed) * dt) % 360;
 
     let r = (a * (1 - (e * e))) / (1 + e * Math.cos(angle));
     let x = r * cos(angle) + focus;
