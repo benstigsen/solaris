@@ -12,6 +12,8 @@
     speed:  speed in (earth ratio)
 */ 
 
+var PLANET_SCALE = 8704;
+
 function getPerihelion(planet)
 {return planet.a / (1 + planet.e);}
 
@@ -40,15 +42,32 @@ function getTriangleArea(x1, y1, x2, y2, x3, y3)
 
 sun = {
   m: 1.989,
-  r: 80,
+  d: 1_392_700,
+  r: 696_350 / PLANET_SCALE, 
   color: "#FFDD00"
+}
+
+mercury = {
+  a: 57.9,
+  e: 0.205,
+  au: 0.387,
+  d: 4879,
+  color: "#333333"
+}
+
+venus = {
+  a: 108.2,
+  e: 0.007,
+  au: 0.723,
+  d: 12104,
+  color: "#FFDDDD"
 }
 
 earth = {
   a:  149.6,
   e:  0.0167,
   au: 1,
-  r:  20,
+  d:  12756,
   color: "#00FF00"
 }
 
@@ -56,7 +75,7 @@ mars = {
   a:  227.92,
   e:  0.094,
   au: 1.52,
-  r:  20,
+  d:  6792,
   color: "#FF7F00"
 }
 
@@ -64,9 +83,42 @@ jupiter = {
   a:  778.57,
   e:  0.0489,
   au: 5.20,
-  r:  30,
+  d:  142_984,
   color: "#555555"
 }
 
+saturn = {
+  a: 1433.5,
+  e: 0.057,
+  au: 9.58,
+  d: 120_536,
+  color: "#FFFF00"
+}
+
+uranus = {
+  a: 2872.5,
+  e: 0.046,
+  au: 19.20,
+  d: 51118,
+  color: "#FFFF00"
+}
+
+neptune = {
+  a: 4495.1,
+  e: 0.011,
+  au: 30.05,
+  d: 49528,
+  color: "#2288FF"
+}
+
+pluto = {
+  a: 5906.4,
+  e: 0.244,
+  au: 39.48,
+  d: 2370,
+  color: "#2222FF"
+}
+
+
 // Array of planets for easy iteration
-planets = [earth, mars, jupiter];
+planets = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto];

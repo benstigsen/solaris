@@ -4,15 +4,51 @@ const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
 const ANGLE_INCREASE    = 0.001;
 
 const SCALE_INCREASE    = 0.1;
-const SCALE_MIN         = 0.3;
-const SCALE_MAX         = 1.5;
+const SCALE_MIN         = 0.1;
+const SCALE_MAX         = 2.5;
 let scale               = 1.0;
 
+let realistic           = true; // true = realistic, false = planet 50x
+
 function decrementScale()
-{if (!(scale <= SCALE_MIN)) {scale -= SCALE_INCREASE; scale = +scale.toFixed(1);}}
+{
+  if (!(scale <= SCALE_MIN)) 
+  {
+    scale -= SCALE_INCREASE;
+    scale = +scale.toFixed(1);
+  }
+}
 
 function incrementScale()
-{if (!(scale >= SCALE_MAX)) {scale += SCALE_INCREASE; scale = +scale.toFixed(1);}}
+{
+  if (!(scale >= SCALE_MAX)) 
+  {
+    scale += SCALE_INCREASE;
+    scale = +scale.toFixed(1);
+  }
+}
+
+function adjustDiameters()
+{
+  realistic = !realistic;
+
+  // Realistic
+  if (realistic) 
+  {
+    for (let i = 0; i < planets.length; i++)
+    {
+      planets[i].r = (planets[i].d / 2) / PLANET_SCALE;
+    }
+  }
+  // Planets 50x
+  else
+  {
+    for (let i = 0; i < planets.length; i++)
+    {
+      planets[i].r = ((planets[i].d / 2) / PLANET_SCALE) * 50;
+    }
+  }
+}
 
 // Function to handle setup
 function setup()
@@ -21,10 +57,12 @@ function setup()
   createCanvas(WIDTH, HEIGHT)
     .position((windowWidth - WIDTH) / 2, (windowHeight - HEIGHT) / 2);
 
+  adjustDiameters();
+
   // Create scaling buttons
   createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
-  
   createButton('Zoom Out').mousePressed(decrementScale).position(30, 80);
+  createButton('Realistic').mousePressed(adjustDiameters).position(30, 110);
 
   // Set semi-minor axis <b> for each planet
   for (let i = 0; i < planets.length; i++)
@@ -37,8 +75,6 @@ function setup()
     planet.x = planet.a;
     planet.y = 0;
   }
-
-  console.log(earth.focus);
 }
 
 // Function to handle logic
@@ -82,6 +118,7 @@ function draw()
   
   fill("#000000");
   text(scale, 30, 20);
+  text(realistic, 80, 100);
   
   fill("#FFFFFF");
 
@@ -90,12 +127,24 @@ function draw()
   {
     let planet = planets[i];
     fill(planet.color);
-    circle(CENTER.x + (planet.x * scale), CENTER.y + (planet.y * scale), planet.r * scale);
+    // Planet with a minimum radius of 3 pixels
+    circle(
+      CENTER.x + (planet.x * scale),
+      CENTER.y + (planet.y * scale), 
+      Math.max(3, (planet.r * scale))
+    );
     noFill();
     ellipse(CENTER.x, CENTER.y, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
 
+  /*
+  console.log(earth.r * scale);
+  console.log(jupiter.r * scale);
+  console.log("-------");
+  */
+  console.log(jupiter.d * 400);
+
   // Sun
   fill(sun.color);
-  circle(CENTER.x - ((sun.r / 2) * scale), CENTER.y, sun.r * scale);
+  circle(CENTER.x, CENTER.y, sun.r * scale);
 }
