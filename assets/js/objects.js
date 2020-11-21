@@ -10,9 +10,7 @@
     au:     astronomical units
     angle:  angle
     speed:  speed in (earth ratio)
-*/ 
-
-var PLANET_SCALE = 8704;
+*/
 
 function getPerihelion(planet)
 {return planet.a / (1 + planet.e);}
@@ -43,7 +41,7 @@ function getTriangleArea(x1, y1, x2, y2, x3, y3)
 sun = {
   m: 1.989,
   d: 1_392_700,
-  r: 696_350 / PLANET_SCALE, 
+  r: 696_350 / SCALE_DIVISOR, 
   color: "#FFDD00"
 }
 

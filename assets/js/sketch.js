@@ -3,6 +3,7 @@ const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
 const ANGLE_INCREASE    = 0.001;
 
+const SCALE_DIVISOR     = 10000;
 const SCALE_INCREASE    = 0.1;
 const SCALE_MIN         = 0.1;
 const SCALE_MAX         = 2.5;
@@ -37,7 +38,7 @@ function adjustDiameters()
   {
     for (let i = 0; i < planets.length; i++)
     {
-      planets[i].r = (planets[i].d / 2) / PLANET_SCALE;
+      planets[i].r = (planets[i].d / 2) / SCALE_DIVISOR;
     }
   }
   // Planets 50x
@@ -45,7 +46,7 @@ function adjustDiameters()
   {
     for (let i = 0; i < planets.length; i++)
     {
-      planets[i].r = ((planets[i].d / 2) / PLANET_SCALE) * 50;
+      planets[i].r = ((planets[i].d / 2) / SCALE_DIVISOR) * 50;
     }
   }
 }
@@ -131,18 +132,11 @@ function draw()
     circle(
       CENTER.x + (planet.x * scale),
       CENTER.y + (planet.y * scale), 
-      Math.max(3, (planet.r * scale))
+      Math.max(5, (planet.r * scale))
     );
     noFill();
     ellipse(CENTER.x, CENTER.y, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
-
-  /*
-  console.log(earth.r * scale);
-  console.log(jupiter.r * scale);
-  console.log("-------");
-  */
-  console.log(jupiter.d * 400);
 
   // Sun
   fill(sun.color);
