@@ -1,3 +1,8 @@
+/*
+  to-do:
+    fix focus point center (currently completely centered, which is wrong)
+*/
+
 const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
