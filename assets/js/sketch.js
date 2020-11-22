@@ -150,6 +150,9 @@ function draw()
   text(realisticVisuals, 80, 100);
   text(realisticSpeed, 80, 130);
 
+  // Translate everything from center of screen
+  translate(CENTER.x, CENTER.y)
+
   // Draw the planets
   for (let i = 0; i < planets.length; i++)
   {
@@ -157,15 +160,15 @@ function draw()
     fill(planet.color);
     // Planet with a minimum radius of 3 pixels
     circle(
-      CENTER.x + (planet.ae * scale) + (planet.x * scale),
-      CENTER.y + (planet.y * scale), 
+      (planet.ae * scale) + (planet.x * scale),
+      (planet.y * scale), 
       Math.max(5, (planet.r * scale))
     );
     noFill();
-    ellipse(CENTER.x + (planet.ae * scale), CENTER.y, (planet.a * 2) * scale, (planet.b * 2) * scale);
+    ellipse((planet.ae * scale), 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
 
   // Sun
   fill(sun.color);
-  circle(CENTER.x, CENTER.y, sun.r * scale);
+  circle(0, 0, sun.r * scale);
 }
