@@ -8,7 +8,7 @@
     r:      radius
     m:      mass
     au:     astronomical units
-    period: period time in seconds
+    ae:     distance from center to focal point
     angle:  angle
     speed:  speed in (earth ratio)
     G:      gravitational constant
@@ -25,7 +25,10 @@ function getPeriod(planet)
 {return Math.sqrt((planet.a * planet.a * planet.a) / G) / 100;}
 
 function getPeriodDays(planet)
-{return 365.256 * (getPeriod(planet) / earth.period);}
+{return 365.256 * (planet.period / earth.period);}
+
+function getPeriodRealSpeed(planet)
+{return (planet.period / 84000) / 365.256;}
 
 function getPerihelion(planet)
 {return planet.a / (1 + planet.e);}
@@ -46,7 +49,10 @@ function getSemiMinorAxis(planet)
 {return planet.a * Math.sqrt(1 - (planet.e * planet.e));}
 
 function getFocusPoint(planet)
-{return Math.sqrt((planet.a * planet.a) - (planet.b * planet.b));}
+{
+  if (!(planet.b)) {return planet.a * planet.e;}
+  return Math.sqrt((planet.a * planet.a) - (planet.b * planet.b));
+}
 
 function getTriangleArea(x1, y1, x2, y2, x3, y3)
 {

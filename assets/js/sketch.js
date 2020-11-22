@@ -16,7 +16,8 @@ const SCALE_MAX         = 2.5;
 const G                 = 6.67430;
 
 let scale               = 1.0;
-let realistic           = true; // true = realistic, false = planet 50x
+let realisticVisuals    = true; // true = realistic, false = planet 50x
+let realisticSpeed      = false;
 
 function decrementScale()
 {
@@ -38,10 +39,10 @@ function incrementScale()
 
 function adjustDiameters()
 {
-  realistic = !realistic;
+  realisticVisuals = !realisticVisuals;
 
   // Realistic
-  if (realistic) 
+  if (realisticVisuals) 
   {
     for (let i = 0; i < planets.length; i++)
     {
@@ -58,6 +59,24 @@ function adjustDiameters()
   }
 }
 
+function adjustSpeed()
+{
+  realisticSpeed = !realisticSpeed;
+
+  // Realistic
+  if (realisticSpeed) 
+  {
+    for (let i = 0; i < planets.length; i++)
+    {planets[i].speed = getPeriodRealSpeed(planets[i]);}
+  }
+  // Non-Realistic
+  else
+  {
+    for (let i = 0; i < planets.length; i++)
+    {planets[i].speed = getEarthSpeedRatio(planets[i]);}
+  }
+}
+
 // Function to handle setup
 function setup()
 { 
@@ -71,17 +90,20 @@ function setup()
   createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
   createButton('Zoom Out').mousePressed(decrementScale).position(30, 80);
   createButton('Realistic').mousePressed(adjustDiameters).position(30, 110);
+  createButton('Speed').mousePressed(adjustSpeed).position(30, 140);
 
+  console.log((earth.a * earth.e) / SCALE_DIVISOR);
   // Set semi-minor axis <b> for each planet
   for (let i = 0; i < planets.length; i++)
   {
     let planet    = planets[i];
     planet.a      = planet.a / 1_000_000;
+    planet.ae     = getFocusPoint(planet);
     planet.b      = getSemiMinorAxis(planet);
     planet.focus  = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet);
     planet.period = getPeriod(planet);
-    planet.angle  = 0.0;
+    planet.angle  = 0;
     planet.x      = planet.a;
     planet.y      = 0;
   }
@@ -125,7 +147,8 @@ function draw()
   
   fill("#000000");
   text(scale, 30, 20);
-  text(realistic, 80, 100);
+  text(realisticVisuals, 80, 100);
+  text(realisticSpeed, 80, 130);
   
   fill("#FFFFFF");
 
@@ -136,12 +159,12 @@ function draw()
     fill(planet.color);
     // Planet with a minimum radius of 3 pixels
     circle(
-      CENTER.x + (planet.x * scale),
+      CENTER.x + (planet.ae * scale) + (planet.x * scale),
       CENTER.y + (planet.y * scale), 
       Math.max(5, (planet.r * scale))
     );
     noFill();
-    ellipse(CENTER.x, CENTER.y, (planet.a * 2) * scale, (planet.b * 2) * scale);
+    ellipse(CENTER.x + (planet.ae * scale), CENTER.y, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
 
   // Sun
