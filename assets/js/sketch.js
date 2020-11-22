@@ -149,8 +149,6 @@ function draw()
   text(scale, 30, 20);
   text(realisticVisuals, 80, 100);
   text(realisticSpeed, 80, 130);
-  
-  fill("#FFFFFF");
 
   // Draw the planets
   for (let i = 0; i < planets.length; i++)
@@ -170,6 +168,4 @@ function draw()
   // Sun
   fill(sun.color);
   circle(CENTER.x, CENTER.y, sun.r * scale);
-
-  fill("#000000");
 }
