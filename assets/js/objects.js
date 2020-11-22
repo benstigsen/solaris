@@ -8,9 +8,24 @@
     r:      radius
     m:      mass
     au:     astronomical units
+    period: period time in seconds
     angle:  angle
     speed:  speed in (earth ratio)
+    G:      gravitational constant
 */
+
+function getDistance(planet)
+{
+  return Math.sqrt((
+    ((CENTER.x + planet.x) - CENTER.x) ** 2) + 
+    ((CENTER.y + planet.y) - CENTER.y) ** 2);
+}
+
+function getPeriod(planet)
+{return Math.sqrt((planet.a * planet.a * planet.a) / G) / 100;}
+
+function getPeriodDays(planet)
+{return 365.256 * (getPeriod(planet) / earth.period);}
 
 function getPerihelion(planet)
 {return planet.a / (1 + planet.e);}
@@ -46,7 +61,7 @@ sun = {
 }
 
 mercury = {
-  a: 57.9,
+  a: 57_900_000,
   e: 0.205,
   au: 0.387,
   d: 4879,
@@ -54,7 +69,7 @@ mercury = {
 }
 
 venus = {
-  a: 108.2,
+  a: 108_200_000,
   e: 0.007,
   au: 0.723,
   d: 12104,
@@ -62,15 +77,15 @@ venus = {
 }
 
 earth = {
-  a:  149.6,
+  a:  149_600_000,  // km
   e:  0.0167,
   au: 1,
-  d:  12756,
+  d:  12_756,       // km
   color: "#00FF00"
 }
 
 mars = {
-  a:  227.92,
+  a:  227_920_000,
   e:  0.094,
   au: 1.52,
   d:  6792,
@@ -78,7 +93,7 @@ mars = {
 }
 
 jupiter = {
-  a:  778.57,
+  a:  778_570_000,
   e:  0.0489,
   au: 5.20,
   d:  142_984,
@@ -86,7 +101,7 @@ jupiter = {
 }
 
 saturn = {
-  a: 1433.5,
+  a: 1_433_500_000,
   e: 0.057,
   au: 9.58,
   d: 120_536,
@@ -94,15 +109,15 @@ saturn = {
 }
 
 uranus = {
-  a: 2872.5,
+  a: 2_872_500_000,
   e: 0.046,
   au: 19.20,
-  d: 51118,
+  d: 51_118,
   color: "#FFFF00"
 }
 
 neptune = {
-  a: 4495.1,
+  a: 4_495_100_000,
   e: 0.011,
   au: 30.05,
   d: 49528,
@@ -110,7 +125,7 @@ neptune = {
 }
 
 pluto = {
-  a: 5906.4,
+  a: 5_906_400_000,
   e: 0.244,
   au: 39.48,
   d: 2370,
@@ -119,4 +134,5 @@ pluto = {
 
 
 // Array of planets for easy iteration
-planets = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto];
+// Earth is first to apply setup changes to it
+planets = [earth, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto];

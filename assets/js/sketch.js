@@ -12,8 +12,10 @@ const SCALE_DIVISOR     = 10000;
 const SCALE_INCREASE    = 0.1;
 const SCALE_MIN         = 0.1;
 const SCALE_MAX         = 2.5;
-let scale               = 1.0;
 
+const G                 = 6.67430;
+
+let scale               = 1.0;
 let realistic           = true; // true = realistic, false = planet 50x
 
 function decrementScale()
@@ -73,13 +75,15 @@ function setup()
   // Set semi-minor axis <b> for each planet
   for (let i = 0; i < planets.length; i++)
   {
-    let planet = planets[i];
-    planet.b = getSemiMinorAxis(planet);
-    planet.focus = getFocusPoint(planet);
-    planet.speed = getEarthSpeedRatio(planet);
-    planet.angle = 0.0;
-    planet.x = planet.a;
-    planet.y = 0;
+    let planet    = planets[i];
+    planet.a      = planet.a / 1_000_000;
+    planet.b      = getSemiMinorAxis(planet);
+    planet.focus  = getFocusPoint(planet);
+    planet.speed  = getEarthSpeedRatio(planet);
+    planet.period = getPeriod(planet);
+    planet.angle  = 0.0;
+    planet.x      = planet.a;
+    planet.y      = 0;
   }
 }
 
@@ -107,8 +111,6 @@ function update(dt)
     planet.y = y;
     planet.angle = angle;
   }
-  // Update position
-
 }
 
 // Function to handle drawing
@@ -116,7 +118,6 @@ function draw()
 {
   // Handle logic
   update(deltaTime);
-
 
   // Clear canvas and reset colors
   clear();
@@ -146,4 +147,6 @@ function draw()
   // Sun
   fill(sun.color);
   circle(CENTER.x, CENTER.y, sun.r * scale);
+
+  fill("#000000");
 }
