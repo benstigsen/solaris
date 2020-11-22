@@ -92,7 +92,6 @@ function setup()
   createButton('Realistic').mousePressed(adjustDiameters).position(30, 110);
   createButton('Speed').mousePressed(adjustSpeed).position(30, 140);
 
-  console.log((earth.a * earth.e) / SCALE_DIVISOR);
   // Set semi-minor axis <b> for each planet
   for (let i = 0; i < planets.length; i++)
   {
@@ -158,14 +157,15 @@ function draw()
   {
     let planet = planets[i];
     fill(planet.color);
-    // Planet with a minimum radius of 3 pixels
+
+    // Planet with a minimum radius of 5 pixels
     circle(
       (planet.ae * scale) + (planet.x * scale),
-      (planet.y * scale), 
+      planet.y * scale, 
       Math.max(5, (planet.r * scale))
     );
     noFill();
-    ellipse((planet.ae * scale), 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
+    ellipse(planet.ae * scale, 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
 
   // Sun
