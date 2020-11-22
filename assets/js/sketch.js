@@ -6,7 +6,7 @@
 const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
-const ANGLE_INCREASE    = 0.001;
+const ANGLE_INCREASE    = 0.03;
 
 const SCALE_DIVISOR     = 10000;
 const SCALE_INCREASE    = 0.1;
@@ -16,8 +16,8 @@ const SCALE_MAX         = 2.5;
 const G                 = 6.67430;
 
 let scale               = 1.0;
-let realisticVisuals    = true; // true = realistic, false = planet 50x
-let realisticSpeed      = false;
+let realisticVisuals    = false; // true = realistic, false = size 50x
+let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
 
 function decrementScale()
 {
@@ -84,7 +84,8 @@ function setup()
   createCanvas(WIDTH, HEIGHT)
     .position((windowWidth - WIDTH) / 2, (windowHeight - HEIGHT) / 2);
 
-  adjustDiameters();
+  // Change angle mode to degrees
+  angleMode(DEGREES);
 
   // Create scaling buttons
   createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
@@ -97,6 +98,7 @@ function setup()
   {
     let planet    = planets[i];
     planet.a      = planet.a / 1_000_000;
+    planet.r      = ((planet.d / 2) / SCALE_DIVISOR) * 50;
     planet.ae     = getFocusPoint(planet);
     planet.b      = getSemiMinorAxis(planet);
     planet.focus  = getFocusPoint(planet);
@@ -116,13 +118,12 @@ function update(dt)
     let planet = planets[i];
 
     let angle = planet.angle;
-    let a = planet.a;
     let e = planet.e;
     let focus = planet.focus;
 
-    angle += ((ANGLE_INCREASE * planet.speed) * dt) % 360;
+    angle = (angle + ((ANGLE_INCREASE * planet.speed) * dt)) % 360;
 
-    let r = (a * (1 - (e * e))) / (1 + e * Math.cos(angle));
+    let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
     let x = r * cos(angle) + focus;
     let y = r * sin(angle);
 
