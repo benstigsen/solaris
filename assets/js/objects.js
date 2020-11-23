@@ -22,13 +22,10 @@ function getDistance(planet)
 }
 
 function getPeriod(planet)
-{return Math.sqrt((planet.a * planet.a * planet.a) / G) / 100;}
+{return Math.sqrt(planet.au * planet.au * planet.au);}
 
 function getPeriodDays(planet)
 {return 365.256 * (planet.period / earth.period);}
-
-function getPeriodRealSpeed(planet)
-{return (planet.period / 84000) / 365.256;}
 
 function getPerihelion(planet)
 {return planet.a / (1 + planet.e);}

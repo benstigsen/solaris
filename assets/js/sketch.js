@@ -6,7 +6,6 @@
 const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
-const ANGLE_INCREASE    = 0.03;
 
 const SCALE_DIVISOR     = 10000;
 const SCALE_INCREASE    = 0.1;
@@ -15,6 +14,8 @@ const SCALE_MAX         = 2.5;
 
 const G                 = 6.67430;
 
+let speedMultiplier     = 20;
+
 let scale               = 1.0;
 let realisticVisuals    = false; // true = realistic, false = size 50x
 let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
@@ -22,22 +23,16 @@ let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
 function decrementScale()
 {
   if (!(scale <= SCALE_MIN)) 
-  {
-    scale -= SCALE_INCREASE;
-    scale = +scale.toFixed(1);
-  }
+  {scale = (+scale - SCALE_INCREASE).toFixed(1);}
 }
 
 function incrementScale()
 {
   if (!(scale >= SCALE_MAX)) 
-  {
-    scale += SCALE_INCREASE;
-    scale = +scale.toFixed(1);
-  }
+  {scale = (+scale + SCALE_INCREASE).toFixed(1);}
 }
 
-function adjustDiameters()
+function toggleRealDiameter()
 {
   realisticVisuals = !realisticVisuals;
 
@@ -45,36 +40,22 @@ function adjustDiameters()
   if (realisticVisuals) 
   {
     for (let i = 0; i < planets.length; i++)
-    {
-      planets[i].r = (planets[i].d / 2) / SCALE_DIVISOR;
-    }
+    {planets[i].r = planets[i].r / 50;}
   }
   // Planets 50x
   else
   {
     for (let i = 0; i < planets.length; i++)
-    {
-      planets[i].r = ((planets[i].d / 2) / SCALE_DIVISOR) * 50;
-    }
+    {planets[i].r = planets[i].r * 50;}
   }
 }
 
-function adjustSpeed()
+function toggleRealSpeed()
 {
   realisticSpeed = !realisticSpeed;
 
-  // Realistic
-  if (realisticSpeed) 
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].speed = getPeriodRealSpeed(planets[i]);}
-  }
-  // Non-Realistic
-  else
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].speed = getEarthSpeedRatio(planets[i]);}
-  }
+  if (realisticSpeed) {speedMultiplier = 360 / (365.256 * 84000);}
+  else                {speedMultiplier = 20;}
 }
 
 // Function to handle setup
@@ -90,15 +71,15 @@ function setup()
   // Create scaling buttons
   createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
   createButton('Zoom Out').mousePressed(decrementScale).position(30, 80);
-  createButton('Realistic').mousePressed(adjustDiameters).position(30, 110);
-  createButton('Speed').mousePressed(adjustSpeed).position(30, 140);
+  createButton('Diameter').mousePressed(toggleRealDiameter).position(30, 110);
+  createButton('Speed').mousePressed(toggleRealSpeed).position(30, 140);
 
   // Set semi-minor axis <b> for each planet
   for (let i = 0; i < planets.length; i++)
   {
     let planet    = planets[i];
     planet.a      = planet.a / 1_000_000;
-    planet.r      = ((planet.d / 2) / SCALE_DIVISOR) * 50;
+    planet.r      = Math.ceil(((planet.d / 2) / SCALE_DIVISOR) * 50);
     planet.ae     = getFocusPoint(planet);
     planet.b      = getSemiMinorAxis(planet);
     planet.focus  = getFocusPoint(planet);
@@ -121,7 +102,8 @@ function update(dt)
     let e = planet.e;
     let focus = planet.focus;
 
-    angle = (angle + ((ANGLE_INCREASE * planet.speed) * dt)) % 360;
+    //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
+    angle += (speedMultiplier * planet.speed) * (dt / 1000);
 
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
     let x = r * cos(angle) + focus;
