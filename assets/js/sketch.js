@@ -21,16 +21,10 @@ let realisticVisuals    = false; // true = realistic, false = size 50x
 let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
 
 function decrementScale()
-{
-  if (!(scale <= SCALE_MIN)) 
-  {scale = (+scale - SCALE_INCREASE).toFixed(1);}
-}
+{if (scale > SCALE_MIN) {scale = (+scale - SCALE_INCREASE).toFixed(1);}}
 
 function incrementScale()
-{
-  if (!(scale >= SCALE_MAX)) 
-  {scale = (+scale + SCALE_INCREASE).toFixed(1);}
-}
+{if (scale < SCALE_MAX) {scale = (+scale + SCALE_INCREASE).toFixed(1);}}
 
 function toggleRealDiameter()
 {
