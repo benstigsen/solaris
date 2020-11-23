@@ -69,10 +69,10 @@ function setup()
     let planet    = planets[i];
     planet.a      = planet.a / 1_000_000;
     planet.r      = Math.ceil(((planet.d / 2) / SCALE_DIVISOR) * 50);
-    planet.b      = getSemiMinorAxis(planet);
+    planet.b      = getSemiMinorAxis(planet.a, planet.e);
     planet.focus  = getFocusPoint(planet);
-    planet.speed  = getEarthSpeedRatio(planet);
-    planet.period = getPeriod(planet);
+    planet.speed  = getEarthSpeedRatio(planet.a);
+    planet.T      = getPeriod(planet.au);
     planet.angle  = 0;
     planet.x      = planet.a;
     planet.y      = 0;
@@ -93,11 +93,12 @@ function update(dt)
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
     angle += (speedMultiplier * planet.speed) * (dt / 1000);
 
+    // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
     let x = r * cos(angle) + focus;
     let y = r * sin(angle);
 
-    let area = getTriangleArea(-focus, 0, planet.x, planet.y, x, y);
+    //planet.area = getTriangleArea(-focus, 0, planet.x, planet.y, x, y);
 
     planet.x = x;
     planet.y = y;

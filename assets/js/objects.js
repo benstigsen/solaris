@@ -1,17 +1,16 @@
 /*
   Script for data and calculations related to planets / moons / suns
 
-  Variables:
+  Variables for each planet:
     a:      semi-major axis
     b:      semi-minor axis
     e:      eccentricity
     r:      radius
-    m:      mass
     au:     astronomical units
+    T:      period (years)
     focus:  distance from center to focal point
     angle:  angle (degrees)
     speed:  speed (earth ratio)
-    G:      gravitational constant
 */
 
 function getDistance(planet)
@@ -21,32 +20,35 @@ function getDistance(planet)
     ((CENTER.y + planet.y) - CENTER.y) ** 2);
 }
 
-function getPeriod(planet)
-{return Math.sqrt(planet.au * planet.au * planet.au);}
+function getPeriod(au)
+{return Math.sqrt(au * au * au);}
 
-function getPeriodSimulation(planet)
-{return (360 / speedMultiplier) * Math.sqrt(planet.au * planet.au * planet.au);}
+function getPeriodSimulation(au)
+{return (360 / speedMultiplier) * Math.sqrt(au * au * au);}
 
-function getPeriodDays(planet)
-{return 365.256 * (planet.period / earth.period);}
+function getPeriodDays(T)
+{return 365.256 * (period / earth.period);}
 
-function getPerihelion(planet)
-{return planet.a / (1 + planet.e);}
+function getPerihelion(a, e)
+{return a / (1 + e);}
 
-function getAphelion(planet)
-{return planet.a / (1 - planet.e);}
+function getAphelion(a, e)
+{return a / (1 - e);}
 
-function getAstronomicalUnit(planet)
-{return planet.a / earth.a;}
+function getAstronomicalUnit(a)
+{return a / earth.a;}
 
-function getEarthSpeedRatio(planet)
-{return Math.sqrt((earth.a / planet.a) ** 3);}
+function getEarthSpeedRatio(a)
+{
+  let ratio = earth.a / a;
+  return Math.sqrt(ratio * ratio * ratio);
+}
 
-function getSemiMajorAxis(planet)
-{return (getPerihelion(planet) + getAphelion(planet)) / 2;}
+function getSemiMajorAxis(a, e)
+{return (getPerihelion(a, e) + getAphelion(a, e)) / 2;}
 
-function getSemiMinorAxis(planet)
-{return planet.a * Math.sqrt(1 - (planet.e * planet.e));}
+function getSemiMinorAxis(a, e)
+{return a * Math.sqrt(1 - (e * e));}
 
 function getFocusPoint(planet)
 {
@@ -60,7 +62,6 @@ function getTriangleArea(x1, y1, x2, y2, x3, y3)
 }
 
 sun = {
-  m: 1.989,
   d: 1_392_700,
   r: 696_350 / SCALE_DIVISOR, 
   color: "#FFDD00"
