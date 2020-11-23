@@ -8,9 +8,9 @@
     r:      radius
     m:      mass
     au:     astronomical units
-    ae:     distance from center to focal point
-    angle:  angle
-    speed:  speed in (earth ratio)
+    focus:  distance from center to focal point
+    angle:  angle (degrees)
+    speed:  speed (earth ratio)
     G:      gravitational constant
 */
 
@@ -23,6 +23,9 @@ function getDistance(planet)
 
 function getPeriod(planet)
 {return Math.sqrt(planet.au * planet.au * planet.au);}
+
+function getPeriodSimulation(planet)
+{return (360 / speedMultiplier) * Math.sqrt(planet.au * planet.au * planet.au);}
 
 function getPeriodDays(planet)
 {return 365.256 * (planet.period / earth.period);}

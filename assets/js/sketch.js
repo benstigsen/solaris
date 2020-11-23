@@ -1,8 +1,3 @@
-/*
-  to-do:
-    fix focus point center (currently completely centered, which is wrong)
-*/
-
 const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
@@ -74,7 +69,6 @@ function setup()
     let planet    = planets[i];
     planet.a      = planet.a / 1_000_000;
     planet.r      = Math.ceil(((planet.d / 2) / SCALE_DIVISOR) * 50);
-    planet.ae     = getFocusPoint(planet);
     planet.b      = getSemiMinorAxis(planet);
     planet.focus  = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet);
@@ -137,12 +131,12 @@ function draw()
 
     // Planet with a minimum radius of 5 pixels
     circle(
-      (planet.ae * scale) + (planet.x * scale),
+      (planet.focus * scale) + (planet.x * scale),
       planet.y * scale, 
       Math.max(5, (planet.r * scale))
     );
     noFill();
-    ellipse(planet.ae * scale, 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
+    ellipse(planet.focus * scale, 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
 
   // Sun
