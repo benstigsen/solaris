@@ -14,7 +14,7 @@ const SCALE_MAX         = 2.5;
 
 const G                 = 6.67430;
 
-let speedMultiplier     = 20;
+let speedMultiplier     = (360 / 15); // 15 second orbit
 
 let scale               = 1.0;
 let realisticVisuals    = false; // true = realistic, false = size 50x
@@ -55,7 +55,7 @@ function toggleRealSpeed()
   realisticSpeed = !realisticSpeed;
 
   if (realisticSpeed) {speedMultiplier = 360 / (365.256 * 84000);}
-  else                {speedMultiplier = 20;}
+  else                {speedMultiplier = 360 / 15;}
 }
 
 // Function to handle setup
