@@ -70,7 +70,7 @@ function update(dt)
     let focus = planet.focus;
 
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
-    angle += (speedMultiplier * planet.speed) * (dt / 1000);
+    angle = (angle + (speedMultiplier * planet.speed) * (dt / 1000)) % 360;
 
     // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
@@ -133,14 +133,84 @@ function draw()
 
   // Draw focus points and lines if a specific planet has been selected
   if (selectedPlanet != undefined)
-  {   
+  {
+    let x;
+    let y;
+
+    // Draw information box
+    x = -CENTER.x + 250;
+    y = -CENTER.y + 10;
+    fill("#FFFFFF");
+    rect(x, y, 275, 200);
+
     fill("#000000");
+    textSize(16);
+    text(selectedPlanet.name, x + 3, y + 15);
+    textSize(12);
     
+    text(
+      "Semi-major axis: " + 
+      (+selectedPlanet.a).toFixed(2) + 
+      " x 10^6 km", 
+      x + 3, y + 40
+    );
+    
+    text(
+      "Semi-minor axis: " + 
+      (+selectedPlanet.b).toFixed(2) + 
+      " x 10^6 km", 
+      x + 3, y + 55
+    );
+
+    text(
+      "Perihelion: " + 
+      (+selectedPlanet.peri).toFixed(2) + 
+      " x 10^6 km", 
+      x + 3, y + 75
+    );
+
+    text(
+      "Aphelion: " + 
+      (+selectedPlanet.aphe).toFixed(2) + 
+      " x 10^6 km", 
+      x + 3, y + 90
+    );
+
+    text(
+      "Eccentricity: " + 
+      selectedPlanet.e.toFixed(4), 
+      x + 3, y + 115
+    );
+
+    text(
+      "Orbital period (Earth days): " + 
+      getPeriodDays(selectedPlanet.T).toFixed(2), 
+      x + 3, y + 140
+    );
+
+    text(
+      "Current angle (from center): " + 
+      selectedPlanet.angle.toFixed(4), 
+      x + 3, y + 165
+    );
+
+    text(
+      "Sum of focal point distances: " +
+      (
+        getDistance(0, 0, selectedPlanet.x + selectedPlanet.focus, selectedPlanet.y) +
+        getDistance(selectedPlanet.focus * 2, 0, selectedPlanet.x + selectedPlanet.focus, selectedPlanet.y)
+      ).toFixed(2) +
+      " x 10^6 km",
+      x + 3, y + 190
+    );
+    
+    // Draw focus points and lines
     circle(0, 0, 5);
     circle(selectedPlanet.focus * 2 * zoom, 0, 5);
     
-    let x = (selectedPlanet.x * zoom) + (selectedPlanet.focus * zoom);
-    let y = selectedPlanet.y * zoom;
+    x = (selectedPlanet.x * zoom) + (selectedPlanet.focus * zoom);
+    y = selectedPlanet.y * zoom;
+
     line(0, 0, x, y);
     line(selectedPlanet.focus * 2 * zoom, 0, x, y);
   }
