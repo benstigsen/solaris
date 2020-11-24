@@ -1,6 +1,6 @@
 const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
-const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
+const CENTER            = {x: (WIDTH / 2), y: (HEIGHT / 2)};
 
 const SCALE_RADIUS      = 1 / 10000;
 const SCALE_INCREASE    = 0.1;
@@ -11,43 +11,12 @@ const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 const G                 = 6.67430;
 
 let speedMultiplier     = (360 / 15); // 15 second orbit
-
 let scale               = 1.0;
-let realisticVisuals    = false; // true = realistic, false = size 50x
-let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
+
+// Interactive controls
+let orbitalTime;
+let planetSize;
 let planetSelection;
-
-function decrementScale()
-{if (scale > SCALE_MIN) {scale = (+scale - SCALE_INCREASE).toFixed(1);}}
-
-function incrementScale()
-{if (scale < SCALE_MAX) {scale = (+scale + SCALE_INCREASE).toFixed(1);}}
-
-function toggleRealDiameter()
-{
-  realisticVisuals = !realisticVisuals;
-
-  // Realistic
-  if (realisticVisuals) 
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].r = planets[i].r / 50;}
-  }
-  // Planets 50x
-  else
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].r = planets[i].r * 50;}
-  }
-}
-
-function toggleRealSpeed()
-{
-  realisticSpeed = !realisticSpeed;
-
-  if (realisticSpeed) {speedMultiplier = 360 / (365.256 * 84000);}
-  else                {speedMultiplier = 360 / 15;}
-}
 
 // Function to handle setup
 function setup()
@@ -59,15 +28,11 @@ function setup()
   // Change angle mode to degrees
   angleMode(DEGREES);
 
-  // Create scaling buttons
-  createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
-  createButton('Zoom Out').mousePressed(decrementScale).position(30, 80);
-  createButton('Diameter').mousePressed(toggleRealDiameter).position(30, 110);
-  createButton('Speed').mousePressed(toggleRealSpeed).position(30, 140);
-
-  planetSelection = createSelect();
-  planetSelection.position(30, 180);
-  planetSelection.option("All Planets");
+  // Add interactive elements
+  addPlanetSizeOptions();
+  addOrbitalTimeOptions();
+  addPlanetSelectionOptions();
+  addZoomButtons();
 
   sun.r = sun.r * SCALE_RADIUS
 
@@ -90,7 +55,6 @@ function setup()
     planet.angle  = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
     planet.aphe   = getAphelion(planet.a, planet.e);
-    planetSelection.option(planet.name);
   }
 }
 
@@ -131,8 +95,6 @@ function draw()
   
   fill("#000000");
   text(scale, 30, 20);
-  text(realisticVisuals, 80, 100);
-  text(realisticSpeed, 80, 130);
 
   // Translate everything from center of screen
   translate(CENTER.x, CENTER.y)
