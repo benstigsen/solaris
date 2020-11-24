@@ -88,6 +88,8 @@ function setup()
     planet.x      = planet.a;
     planet.y      = 0;
     planet.angle  = 0;
+    planet.peri   = getPerihelion(planet.a, planet.e);
+    planet.aphe   = getAphelion(planet.a, planet.e);
     planetSelection.option(planet.name);
   }
 }

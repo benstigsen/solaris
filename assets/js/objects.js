@@ -6,11 +6,13 @@
     b:      semi-minor axis
     e:      eccentricity
     r:      radius
-    au:     astronomical units
     T:      period (years)
+    au:     astronomical units
     focus:  distance from center to focal point
-    angle:  angle (degrees)
     speed:  speed (earth ratio)
+    angle:  angle (degrees)
+    peri:   perihelion distance
+    aphe:   aphelion distance
 */
 
 function getDistance(x1, y1, x2, y2)
