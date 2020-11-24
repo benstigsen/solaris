@@ -13,12 +13,8 @@
     speed:  speed (earth ratio)
 */
 
-function getDistance(planet)
-{
-  return Math.sqrt((
-    ((CENTER.x + planet.x) - CENTER.x) ** 2) + 
-    ((CENTER.y + planet.y) - CENTER.y) ** 2);
-}
+function getDistance(x1, y1, x2, y2)
+{return Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2));}
 
 function getPeriod(au)
 {return Math.sqrt(au * au * au);}
