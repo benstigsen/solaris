@@ -1,8 +1,8 @@
-function decrementScale()
-{if (scale > SCALE_MIN) {scale = (+scale - SCALE_INCREASE).toFixed(1);}}
+function incrementZoom()
+{if (zoom < SCALE_MAX) {zoom = (+zoom + SCALE_INCREASE).toFixed(1);}}
 
-function incrementScale()
-{if (scale < SCALE_MAX) {scale = (+scale + SCALE_INCREASE).toFixed(1);}}
+function decrementZoom()
+{if (zoom > SCALE_MIN) {zoom = (+zoom - SCALE_INCREASE).toFixed(1);}}
 
 function togglePlanetSize()
 {
@@ -76,6 +76,7 @@ function addPlanetSelectionOptions()
 
 function addZoomButtons()
 {
-  createButton('Zoom In').mousePressed(incrementScale).position(30, 50);
-  createButton('Zoom Out').mousePressed(decrementScale).position(100, 50);
+  createP("Zoom Level").position(30, 15);
+  createButton('+').mousePressed(incrementZoom).position(30, 50);
+  createButton('-').mousePressed(decrementZoom).position(100, 50);
 }

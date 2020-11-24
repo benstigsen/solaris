@@ -11,7 +11,7 @@ const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 const G                 = 6.67430;
 
 let speedMultiplier     = (360 / 15); // 15 second orbit
-let scale               = 1.0;
+let zoom                = 1.0;
 
 // Interactive controls
 let orbitalTime;
@@ -94,7 +94,7 @@ function draw()
   background(220);
   
   fill("#000000");
-  text(scale, 30, 20);
+  text((+zoom).toFixed(1), 46, 40);
 
   // Translate everything from center of screen
   translate(CENTER.x, CENTER.y)
@@ -118,18 +118,18 @@ function draw()
 
     // Planet with a minimum radius of 5 pixels
     circle(
-      (planet.focus * scale) + (planet.x * scale),
-      planet.y * scale, 
-      Math.max(5, (planet.r * scale))
+      (planet.focus * zoom) + (planet.x * zoom),
+      planet.y * zoom, 
+      Math.max(5, (planet.r * zoom))
     );
     
     noFill();
-    ellipse(planet.focus * scale, 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
+    ellipse(planet.focus * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
   }
 
   // Sun
   fill(sun.color);
-  circle(0, 0, sun.r * scale);
+  circle(0, 0, sun.r * zoom);
 
   // Draw focus points and lines if a specific planet has been selected
   if (selectedPlanet != undefined)
@@ -137,11 +137,11 @@ function draw()
     fill("#000000");
     
     circle(0, 0, 5);
-    circle(selectedPlanet.focus * 2 * scale, 0, 5);
+    circle(selectedPlanet.focus * 2 * zoom, 0, 5);
     
-    let x = (selectedPlanet.x * scale) + (selectedPlanet.focus * scale);
-    let y = selectedPlanet.y * scale;
+    let x = (selectedPlanet.x * zoom) + (selectedPlanet.focus * zoom);
+    let y = selectedPlanet.y * zoom;
     line(0, 0, x, y);
-    line(selectedPlanet.focus * 2 * scale, 0, x, y);
+    line(selectedPlanet.focus * 2 * zoom, 0, x, y);
   }
 }
