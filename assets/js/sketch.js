@@ -10,13 +10,14 @@ const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 
 const G                 = 6.67430;
 
-let speedMultiplier     = (360 / 15); // 15 second orbit
+let speedMultiplier     = 360 / 15; // 15 second orbit
 let zoom                = 1.0;
 
 // Interactive controls
 let orbitalTime;
 let planetSize;
 let planetSelection;
+let hohmannCheckbox;
 
 // Function to handle setup
 function setup()
@@ -33,6 +34,7 @@ function setup()
   addOrbitalTimeOptions();
   addPlanetSelectionOptions();
   addZoomButtons();
+  addHohmannTransferToggle();
 
   sun.r = sun.r * SCALE_RADIUS
 
@@ -41,6 +43,7 @@ function setup()
     let planet  = planets[i];
     planet.a    = planet.a * SCALE_MAJOR_AXIS;
     planet.r    = Math.ceil(((planet.d / 2) * SCALE_RADIUS) * 50);
+    planet.T    = getPeriod(planet.au);
   }
 
   for (let i = 0; i < planets.length; i++)
@@ -49,12 +52,12 @@ function setup()
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
     planet.focus  = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet.a);
-    planet.T      = getPeriod(planet.au);
     planet.x      = planet.a;
     planet.y      = 0;
-    planet.angle  = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
     planet.aphe   = getAphelion(planet.a, planet.e);
+    planet.time   = (planet.time - earth.time) - 31_558_118;
+    planet.angle  = -(Math.abs(180 - (getAngle(planet)) % 360));
   }
 }
 
@@ -70,7 +73,7 @@ function update(dt)
     let focus = planet.focus;
 
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
-    angle = (angle + (speedMultiplier * planet.speed) * (dt / 1000)) % 360;
+    angle = (angle - (speedMultiplier * planet.speed) * (dt / 1000)) % 360;
 
     // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
@@ -190,7 +193,7 @@ function draw()
 
     text(
       "Current angle (from center): " + 
-      selectedPlanet.angle.toFixed(4), 
+      Math.abs(selectedPlanet.angle.toFixed(4)), 
       x + 3, y + 165
     );
 
@@ -214,4 +217,31 @@ function draw()
     line(0, 0, x, y);
     line(selectedPlanet.focus * 2 * zoom, 0, x, y);
   }
+
+  if (hohmannCheckbox.checked())
+  {
+    let v = p5.Vector.fromAngle(radians(44), (mars.a - 15));
+    line(0, 0, -v.x * zoom, v.y * zoom);
+    
+    // Earth point
+    fill(earth.color);
+    circle(-(earth.peri * zoom) - (earth.focus * zoom) + (3 * zoom), 0, 10);
+    
+    // Transfer Line
+    strokeWeight(2);
+    noFill();
+    bezier(
+      -(earth.peri * zoom), 0, 
+      -(earth.peri * zoom), mars.a * zoom, 
+      (mars.aphe * zoom), mars.a * zoom,
+      (mars.aphe * zoom) - (2 * zoom), 0
+    );
+    strokeWeight(1);
+
+    // Mars points
+    fill(mars.color);
+    circle((mars.aphe * zoom) - (2 * zoom), 0, 5);
+    circle(-v.x * zoom, v.y * zoom, 8);
+  }
+  //arc(-earth.peri, 0, 140, 25, radians(44), 2, OPEN);
 }

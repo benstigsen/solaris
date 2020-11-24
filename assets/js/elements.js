@@ -25,9 +25,9 @@ function changeOrbitalTime()
   let choice = orbitalTime.value();
 
   if      (choice == "1 Year (Real Time)")
-  {speedMultiplier = 360 / (365.256 * 84000);}
+  {speedMultiplier = 360 / (365.256 * 86400);}
   else if (choice == "1 Day (365x)")
-  {speedMultiplier = 360 / 84000;}
+  {speedMultiplier = 360 / 86400;}
   else if (choice == "1 Hour (8,766x)")
   {speedMultiplier = 360 / 3600;}
   else if (choice == "5 Minutes (105,192x)")
@@ -79,4 +79,10 @@ function addZoomButtons()
   createP("Zoom Level").position(30, 15);
   createButton('+').mousePressed(incrementZoom).position(30, 50);
   createButton('-').mousePressed(decrementZoom).position(100, 50);
+}
+
+function addHohmannTransferToggle()
+{
+  hohmannCheckbox = createCheckbox('Show Hohmann transfer', false);
+  hohmannCheckbox.position(25, 290);
 }

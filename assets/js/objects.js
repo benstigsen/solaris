@@ -59,6 +59,30 @@ function getTriangleArea(x1, y1, x2, y2, x3, y3)
   return 0.5 * Math.abs((x1 * (y2 - y3)) + (x2 * (y3 - y1)) + (x3 * (y1 - y2)));
 }
 
+function getAngle(planet)
+{
+  let days = 360 / getPeriodDays(planet.T);
+  let degPerSecond = days / 86400;
+  return (planet.time * degPerSecond) % 360;
+}
+
+function getAngleAtHohmannTransfer(planet1, planet2)
+{
+  let avgAu = (planet1.au + planet2.au) / 2;
+  let transferTime = getPeriod(avgAu);
+  let transferTimeDays = getPeriodDays(transferTime);
+  let orbitTimeDays = getPeriodDays(mars.T);
+  let degreesPerDay = 360 / orbitTimeDays;
+  let degreesMoved = degreesPerDay * (transferTimeDays / 2);
+  let degreesAtArrival = 180;
+  let degreesAtLaunch = degreesAtArrival - degreesMoved;
+  return degreesAtLaunch;
+  /*
+  return 44;
+  */
+  //let degreesAtLaunch = 
+}
+
 sun = {
   d:      1_392_700,
   r:      696_350, 
@@ -71,7 +95,8 @@ mercury = {
   au:     0.387,
   d:      4879,
   color:  "#333333",
-  name:   "Mercury"
+  name:   "Mercury",
+  time:   1611878400
 }
 
 venus = {
@@ -80,16 +105,18 @@ venus = {
   au:     0.723,
   d:      12104,
   color:  "#FFDDDD",
-  name:   "Venus"
+  name:   "Venus",
+  time:   1623456000
 }
 
 earth = {
   a:      149_600_000,  // km
   e:      0.0167,
-  au:     1,
+  au:     1.0,
   d:      12_756,       // km
   color:  "#00FF00",
-  name:   "Earth"
+  name:   "Earth",
+  time:   1609718400
 }
 
 mars = {
@@ -98,7 +125,8 @@ mars = {
   au:     1.52,
   d:      6792,
   color:  "#FF7F00",
-  name:   "Mars"
+  name:   "Mars",
+  time:   1655769600
 }
 
 jupiter = {
@@ -107,7 +135,8 @@ jupiter = {
   au:     5.20,
   d:      142_984,
   color:  "#555555",
-  name:   "Jupiter"
+  name:   "Jupiter",
+  time:   1674172800
 }
 
 saturn = {
@@ -116,7 +145,8 @@ saturn = {
   au:     9.58,
   d:      120_536,
   color:  "#FFFF00",
-  name:   "Saturn"
+  name:   "Saturn",
+  time:   1985212800
 }
 
 uranus = {
@@ -125,7 +155,8 @@ uranus = {
   au:     19.20,
   d:      51_118,
   color:  "#FFFF00",
-  name:   "Uranus"
+  name:   "Uranus",
+  time:   2544307200
 }
 
 neptune = {
@@ -134,7 +165,8 @@ neptune = {
   au:     30.05,
   d:      49528,
   color:  "#2288FF",
-  name:   "Neptune"
+  name:   "Neptune",
+  time:   2293315200
 }
 
 pluto = {
@@ -143,7 +175,8 @@ pluto = {
   au:     39.48,
   d:      2370,
   color:  "#2222FF",
-  name:   "Pluto"
+  name:   "Pluto",
+  time:   8575545600
 }
 
 
