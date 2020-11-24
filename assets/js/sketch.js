@@ -228,14 +228,17 @@ function draw()
     circle(-(earth.peri * zoom) - (earth.focus * zoom) + (3 * zoom), 0, 10);
     
     // Transfer Line
-    strokeWeight(2);
     noFill();
+    strokeWeight(2);
+    stroke("#FF0000");
     bezier(
       -(earth.peri * zoom), 0, 
       -(earth.peri * zoom), mars.a * zoom, 
       (mars.aphe * zoom), mars.a * zoom,
       (mars.aphe * zoom) - (2 * zoom), 0
     );
+
+    stroke("#000000");
     strokeWeight(1);
 
     // Mars points
