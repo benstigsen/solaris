@@ -2,10 +2,11 @@ const WIDTH             = window.innerWidth - 50;
 const HEIGHT            = window.innerHeight - 50;
 const CENTER            = new Point(WIDTH / 2, HEIGHT / 2);
 
-const SCALE_DIVISOR     = 10000;
+const SCALE_RADIUS      = 1 / 10000;
 const SCALE_INCREASE    = 0.1;
 const SCALE_MIN         = 0.1;
 const SCALE_MAX         = 2.5;
+const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 
 const G                 = 6.67430;
 
@@ -14,6 +15,7 @@ let speedMultiplier     = (360 / 15); // 15 second orbit
 let scale               = 1.0;
 let realisticVisuals    = false; // true = realistic, false = size 50x
 let realisticSpeed      = false; // true = realistic, false = speed 30,681,504x
+let planetSelection;
 
 function decrementScale()
 {if (scale > SCALE_MIN) {scale = (+scale - SCALE_INCREASE).toFixed(1);}}
@@ -63,19 +65,30 @@ function setup()
   createButton('Diameter').mousePressed(toggleRealDiameter).position(30, 110);
   createButton('Speed').mousePressed(toggleRealSpeed).position(30, 140);
 
-  // Set semi-minor axis <b> for each planet
+  planetSelection = createSelect();
+  planetSelection.position(30, 180);
+  planetSelection.option("All Planets");
+
+  sun.r = sun.r * SCALE_RADIUS
+
+  for (let i = 0; i < planets.length; i++)
+  {
+    let planet  = planets[i];
+    planet.a    = planet.a * SCALE_MAJOR_AXIS;
+    planet.r    = Math.ceil(((planet.d / 2) * SCALE_RADIUS) * 50);
+  }
+
   for (let i = 0; i < planets.length; i++)
   {
     let planet    = planets[i];
-    planet.a      = planet.a / 1_000_000;
-    planet.r      = Math.ceil(((planet.d / 2) / SCALE_DIVISOR) * 50);
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
     planet.focus  = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet.a);
     planet.T      = getPeriod(planet.au);
-    planet.angle  = 0;
     planet.x      = planet.a;
     planet.y      = 0;
+    planet.angle  = 0;
+    planetSelection.option(planet.name);
   }
 }
 
@@ -97,8 +110,6 @@ function update(dt)
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
     let x = r * cos(angle) + focus;
     let y = r * sin(angle);
-
-    //planet.area = getTriangleArea(-focus, 0, planet.x, planet.y, x, y);
 
     planet.x = x;
     planet.y = y;
@@ -125,7 +136,18 @@ function draw()
   translate(CENTER.x, CENTER.y)
 
   // Draw the planets
-  for (let i = 0; i < planets.length; i++)
+  let selectedPlanet = undefined;
+  let i = 0;
+  let max = planets.length;
+
+  if (planetSelection.value() != "All Planets") 
+  {
+    i = planetsRef[planetSelection.value()];
+    max = i + 1;
+    selectedPlanet = planets[i];
+  }
+
+  for (i; i < max; i++)
   {
     let planet = planets[i];
     fill(planet.color);
@@ -136,6 +158,7 @@ function draw()
       planet.y * scale, 
       Math.max(5, (planet.r * scale))
     );
+    
     noFill();
     ellipse(planet.focus * scale, 0, (planet.a * 2) * scale, (planet.b * 2) * scale);
   }
@@ -143,4 +166,14 @@ function draw()
   // Sun
   fill(sun.color);
   circle(0, 0, sun.r * scale);
+
+  if (selectedPlanet != undefined)
+  {   
+    // Draw lines to selected planet
+    fill("#000000");
+    circle(0, 0, 5);
+    circle(selectedPlanet.focus * 2 * scale, 0, 5);
+    line(0, 0, (selectedPlanet.x * scale) + (selectedPlanet.focus * scale), selectedPlanet.y * scale);
+    line(selectedPlanet.focus * 2 * scale, 0, (selectedPlanet.x * scale) + (selectedPlanet.focus * scale), selectedPlanet.y * scale);
+  }
 }
