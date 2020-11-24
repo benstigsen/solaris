@@ -167,13 +167,17 @@ function draw()
   fill(sun.color);
   circle(0, 0, sun.r * scale);
 
+  // Draw focus points and lines if a specific planet has been selected
   if (selectedPlanet != undefined)
   {   
-    // Draw lines to selected planet
     fill("#000000");
+    
     circle(0, 0, 5);
     circle(selectedPlanet.focus * 2 * scale, 0, 5);
-    line(0, 0, (selectedPlanet.x * scale) + (selectedPlanet.focus * scale), selectedPlanet.y * scale);
-    line(selectedPlanet.focus * 2 * scale, 0, (selectedPlanet.x * scale) + (selectedPlanet.focus * scale), selectedPlanet.y * scale);
+    
+    let x = (selectedPlanet.x * scale) + (selectedPlanet.focus * scale);
+    let y = selectedPlanet.y * scale;
+    line(0, 0, x, y);
+    line(selectedPlanet.focus * 2 * scale, 0, x, y);
   }
 }
