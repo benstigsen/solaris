@@ -23,7 +23,7 @@ function getPeriodSimulation(au)
 {return (360 / speedMultiplier) * Math.sqrt(au * au * au);}
 
 function getPeriodDays(T)
-{return 365.256 * (period / earth.period);}
+{return 365.256 * (T / earth.T);}
 
 function getPerihelion(a, e)
 {return a / (1 + e);}
