@@ -13,6 +13,7 @@
     angle:  angle (degrees)
     peri:   perihelion distance
     aphe:   aphelion distance
+    time:   date till next perihelion (seconds)
 */
 
 function getDistance(x1, y1, x2, y2)

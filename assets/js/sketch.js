@@ -36,8 +36,10 @@ function setup()
   addZoomButtons();
   addHohmannTransferToggle();
 
+  // Scale sun
   sun.r = sun.r * SCALE_RADIUS
 
+  // Scale planet size and major axis
   for (let i = 0; i < planets.length; i++)
   {
     let planet  = planets[i];
@@ -46,6 +48,7 @@ function setup()
     planet.T    = getPeriod(planet.au);
   }
 
+  // Set planet values
   for (let i = 0; i < planets.length; i++)
   {
     let planet    = planets[i];
@@ -56,7 +59,7 @@ function setup()
     planet.y      = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
     planet.aphe   = getAphelion(planet.a, planet.e);
-    planet.time   = (planet.time - earth.time) - 31_558_118;
+    planet.time   = (planet.time - earth.time) - 31_558_118; // 04 January 2020
     planet.angle  = -(Math.abs(180 - (getAngle(planet)) % 360));
   }
 }
@@ -64,6 +67,7 @@ function setup()
 // Function to handle logic
 function update(dt)
 {
+  // Calculate new planet position and angle
   for (let i = 0; i < planets.length; i++)
   {
     let planet = planets[i];
@@ -130,13 +134,14 @@ function draw()
     ellipse(planet.focus * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
   }
 
-  // Sun
+  // Draw sun
   fill(sun.color);
   circle(0, 0, sun.r * zoom);
 
   // Draw focus points and lines if a specific planet has been selected
   if (selectedPlanet != undefined)
   {
+    let p = selectedPlanet;
     let x;
     let y;
 
@@ -146,62 +151,61 @@ function draw()
     fill("#FFFFFF");
     rect(x, y, 275, 200);
 
+    // Name of planet
     fill("#000000");
     textSize(16);
-    text(selectedPlanet.name, x + 3, y + 15);
+    text(p.name, x + 3, y + 15);
     textSize(12);
     
+    // Planet information
     text(
-      "Semi-major axis: " + 
-      (+selectedPlanet.a).toFixed(2) + 
+      "Semi-major axis: " + (+p.a).toFixed(2) + 
       " x 10^6 km", 
       x + 3, y + 40
     );
     
     text(
-      "Semi-minor axis: " + 
-      (+selectedPlanet.b).toFixed(2) + 
-      " x 10^6 km", 
+      "Semi-minor axis: " + (+p.b).toFixed(2) + " x 10^6 km", 
       x + 3, y + 55
     );
 
     text(
       "Perihelion: " + 
-      (+selectedPlanet.peri).toFixed(2) + 
+      (+p.peri).toFixed(2) + 
       " x 10^6 km", 
       x + 3, y + 75
     );
 
     text(
       "Aphelion: " + 
-      (+selectedPlanet.aphe).toFixed(2) + 
+      (+p.aphe).toFixed(2) + 
       " x 10^6 km", 
       x + 3, y + 90
     );
 
     text(
       "Eccentricity: " + 
-      selectedPlanet.e.toFixed(4), 
+      p.e.toFixed(4), 
       x + 3, y + 115
     );
 
     text(
       "Orbital period (Earth days): " + 
-      getPeriodDays(selectedPlanet.T).toFixed(2), 
+      getPeriodDays(p.T).toFixed(2), 
       x + 3, y + 140
     );
 
     text(
       "Current angle (from center): " + 
-      Math.abs(selectedPlanet.angle.toFixed(4)), 
+      Math.abs(p.angle.toFixed(4)), 
       x + 3, y + 165
     );
 
     text(
       "Sum of focal point distances: " +
       (
-        getDistance(0, 0, selectedPlanet.x + selectedPlanet.focus, selectedPlanet.y) +
-        getDistance(selectedPlanet.focus * 2, 0, selectedPlanet.x + selectedPlanet.focus, selectedPlanet.y)
+        getDistance(0, 0, p.x + p.focus, p.y) +
+        getDistance(p.focus * 2, 0, p.x + p.focus, p.y)
       ).toFixed(2) +
       " x 10^6 km",
       x + 3, y + 190
@@ -209,13 +213,13 @@ function draw()
     
     // Draw focus points and lines
     circle(0, 0, 5);
-    circle(selectedPlanet.focus * 2 * zoom, 0, 5);
+    circle(p.focus * 2 * zoom, 0, 5);
     
-    x = (selectedPlanet.x * zoom) + (selectedPlanet.focus * zoom);
-    y = selectedPlanet.y * zoom;
+    x = (p.x * zoom) + (p.focus * zoom);
+    y = p.y * zoom;
 
     line(0, 0, x, y);
-    line(selectedPlanet.focus * 2 * zoom, 0, x, y);
+    line(p.focus * 2 * zoom, 0, x, y);
   }
 
   if (hohmannCheckbox.checked())
