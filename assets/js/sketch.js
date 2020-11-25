@@ -18,7 +18,7 @@ let orbitalTime;
 let planetSize;
 let planetSelection;
 let hohmannCheckbox;
-let date = new Date(2020, 0, 4);
+let date = new Date(2020, 0, 4); // 04. January 2020 (Earth perihelion)
 
 // Function to handle setup
 function setup()
@@ -62,7 +62,7 @@ function setup()
     planet.aphe   = getAphelion(planet.a, planet.e);
     //planet.time   = (planet.time - earth.time) - 31_558_118; // 04 January 2020
     planet.time   = Math.round(date.getTime() / 1000);
-    planet.angle  = -(Math.abs((getAngle(planet)) % 360));
+    planet.angle  = -Math.abs((getAngle(planet) - 180) % 360);
   }
 }
 
@@ -75,17 +75,15 @@ function update(dt)
     let planet = planets[i];
 
     let angle = planet.angle;
-    let e = planet.e;
     let focus = planet.focus;
+    let e     = planet.e;
 
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
-    angle = (angle - (speedMultiplier * planet.speed) * (dt / 1000));
+    angle = angle - ((speedMultiplier * planet.speed) * (dt / 1000));
     if (planet.name == "Earth")
     {
       if (angle % 360 != angle)
-      {
-        date.setFullYear(+date.getFullYear() + 1);
-      }
+      {date.setFullYear(+date.getFullYear() + 1);}
     }
     angle = angle % 360;
 
