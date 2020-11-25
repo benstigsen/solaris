@@ -144,7 +144,7 @@ function draw()
 
   strokeWeight(0);
   fill("#000000");
-  text("Year: " + date.getFullYear(), -CENTER.x + 3, -100);
+  text("Year: " + date.getFullYear(), -CENTER.x + 3, CENTER.y / 4);
   strokeWeight(1);
 
   // Draw sun

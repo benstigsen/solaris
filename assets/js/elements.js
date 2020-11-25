@@ -34,6 +34,10 @@ function changeOrbitalTime()
   {speedMultiplier = 360 / (5 * 60);}
   else if (choice == "15 Seconds (2,045,433x)")
   {speedMultiplier = 360 / 15;}
+  else if (choice == "3 Seconds (10,227,165x)")
+  {speedMultiplier = 360 / 3;}
+  else if (choice == "1 Second (30,681,495x)")
+  {speedMultiplier = 360 / 1;}
 }
 
 function addPlanetSizeOptions()
@@ -56,6 +60,8 @@ function addOrbitalTimeOptions()
   orbitalTime.option("1 Hour (8,766x)");
   orbitalTime.option("5 Minutes (105,192x)");
   orbitalTime.option("15 Seconds (2,045,433x)");
+  orbitalTime.option("3 Seconds (10,227,165x)");
+  orbitalTime.option("1 Second (30,681,495x)");
   orbitalTime.selected("15 Seconds (2,045,433x)");
   orbitalTime.position(30, 170);
   orbitalTime.changed(changeOrbitalTime);
