@@ -142,9 +142,10 @@ function draw()
     ellipse(planet.focus * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
   }
 
+  strokeWeight(0);
   fill("#000000");
-  text(date.getFullYear(), -CENTER.x, 0);
-  //console.log(date.g)
+  text("Year: " + date.getFullYear(), -CENTER.x + 3, -100);
+  strokeWeight(1);
 
   // Draw sun
   fill(sun.color);
@@ -262,5 +263,4 @@ function draw()
     circle((mars.aphe * zoom) - (2 * zoom), 0, 5);
     circle(-v.x * zoom, v.y * zoom, 8);
   }
-  //arc(-earth.peri, 0, 140, 25, radians(44), 2, OPEN);
 }
