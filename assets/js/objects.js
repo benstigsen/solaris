@@ -95,7 +95,7 @@ mercury = {
   e:      0.205,
   au:     0.387,
   d:      4879,
-  color:  "#333333",
+  color:  "#B5721D",
   name:   "Mercury",
   time:   1611878400
 }
@@ -105,7 +105,7 @@ venus = {
   e:      0.007,
   au:     0.723,
   d:      12104,
-  color:  "#FFDDDD",
+  color:  "#FDDCB4",
   name:   "Venus",
   time:   1623456000
 }
@@ -135,7 +135,7 @@ jupiter = {
   e:      0.0489,
   au:     5.20,
   d:      142_984,
-  color:  "#555555",
+  color:  "#DDB482",
   name:   "Jupiter",
   time:   1674172800
 }
@@ -155,7 +155,7 @@ uranus = {
   e:      0.046,
   au:     19.20,
   d:      51_118,
-  color:  "#FFFF00",
+  color:  "#ADD8E6",
   name:   "Uranus",
   time:   2544307200
 }
@@ -175,7 +175,7 @@ pluto = {
   e:      0.244,
   au:     39.48,
   d:      2370,
-  color:  "#2222FF",
+  color:  "#CCCCCC",
   name:   "Pluto",
   time:   8575545600
 }
