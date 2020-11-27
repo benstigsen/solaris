@@ -18,7 +18,6 @@ let orbitalTime;
 let planetSize;
 let planetSelection;
 let hohmannCheckbox;
-let date = new Date(2020, 0, 4); // 04. January 2020 (Earth perihelion)
 
 // Function to handle setup
 function setup()
@@ -34,8 +33,8 @@ function setup()
   addPlanetSizeOptions();
   addOrbitalTimeOptions();
   addPlanetSelectionOptions();
-  addZoomButtons();
   addHohmannTransferToggle();
+  addZoomButtons();
 
   // Scale sun
   sun.r = sun.r * SCALE_RADIUS
@@ -60,9 +59,7 @@ function setup()
     planet.y      = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
     planet.aphe   = getAphelion(planet.a, planet.e);
-    //planet.time   = (planet.time - earth.time) - 31_558_118; // 04 January 2020
-    planet.time   = Math.round(date.getTime() / 1000);
-    planet.angle  = -Math.abs((getAngle(planet) - 180) % 360);
+    planet.angle = 0;
   }
 }
 
@@ -79,20 +76,14 @@ function update(dt)
     let e     = planet.e;
 
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
-    angle = angle - ((speedMultiplier * planet.speed) * (dt / 1000));
-    if (planet.name == "Earth")
-    {
-      if (angle % 360 != angle)
-      {date.setFullYear(+date.getFullYear() + 1);}
-    }
-    angle = angle % 360;
+    angle = (angle - ((speedMultiplier * planet.speed) * (dt / 1000))) % 360;
 
     // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
-    let x = r * cos(angle) + focus;
+    let x = r * cos(angle);
     let y = r * sin(angle);
 
-    planet.x = x;
+    planet.x = x + focus;
     planet.y = y;
     planet.angle = angle;
   }
@@ -142,9 +133,6 @@ function draw()
     ellipse(planet.focus * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
   }
 
-  strokeWeight(0);
-  fill("#000000");
-  text("Year: " + date.getFullYear(), -CENTER.x + 3, CENTER.y / 4);
   strokeWeight(1);
 
   // Draw sun

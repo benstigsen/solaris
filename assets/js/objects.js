@@ -97,7 +97,6 @@ mercury = {
   d:      4879,
   color:  "#B5721D",
   name:   "Mercury",
-  time:   1611878400
 }
 
 venus = {
@@ -107,7 +106,6 @@ venus = {
   d:      12104,
   color:  "#FDDCB4",
   name:   "Venus",
-  time:   1623456000
 }
 
 earth = {
@@ -117,7 +115,6 @@ earth = {
   d:      12_756,       // km
   color:  "#00FF00",
   name:   "Earth",
-  time:   1609718400
 }
 
 mars = {
@@ -127,7 +124,6 @@ mars = {
   d:      6792,
   color:  "#FF7F00",
   name:   "Mars",
-  time:   1655769600
 }
 
 jupiter = {
@@ -137,7 +133,6 @@ jupiter = {
   d:      142_984,
   color:  "#DDB482",
   name:   "Jupiter",
-  time:   1674172800
 }
 
 saturn = {
@@ -147,7 +142,6 @@ saturn = {
   d:      120_536,
   color:  "#FFFF00",
   name:   "Saturn",
-  time:   1985212800
 }
 
 uranus = {
@@ -157,7 +151,6 @@ uranus = {
   d:      51_118,
   color:  "#ADD8E6",
   name:   "Uranus",
-  time:   2544307200
 }
 
 neptune = {
@@ -167,7 +160,6 @@ neptune = {
   d:      49528,
   color:  "#2288FF",
   name:   "Neptune",
-  time:   2293315200
 }
 
 pluto = {
@@ -177,7 +169,6 @@ pluto = {
   d:      2370,
   color:  "#CCCCCC",
   name:   "Pluto",
-  time:   8575545600
 }
 
 
