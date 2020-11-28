@@ -50,22 +50,7 @@ function getSemiMinorAxis(a, e)
 {return a * Math.sqrt(1 - (e * e));}
 
 function getFocusPoint(planet)
-{
-  if (!(planet.b)) {return planet.a * planet.e;}
-  return Math.sqrt((planet.a * planet.a) - (planet.b * planet.b));
-}
-
-function getTriangleArea(x1, y1, x2, y2, x3, y3)
-{
-  return 0.5 * Math.abs((x1 * (y2 - y3)) + (x2 * (y3 - y1)) + (x3 * (y1 - y2)));
-}
-
-function getAngle(planet)
-{
-  let days = 360 / getPeriodDays(planet.T);
-  let degPerSecond = days / 86400;
-  return (planet.time * degPerSecond) % 360;
-}
+{return planet.a * planet.e;}
 
 function getAngleAtHohmannTransfer(planet1, planet2)
 {

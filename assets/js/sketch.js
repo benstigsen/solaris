@@ -45,10 +45,10 @@ function setup()
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
     planet.ae     = getFocusPoint(planet);
     planet.v      = getEarthVelocityRatio(planet.a);
-    planet.x      = planet.a;
-    planet.y      = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
     planet.aphe   = getAphelion(planet.a, planet.e);
+    planet.x      = planet.a;
+    planet.y      = 0;
     planet.angle = 0;
   }
 }
