@@ -8,7 +8,7 @@
     r:      radius
     T:      period (years)
     au:     astronomical units
-    focus:  distance from center to focal point
+    ae:     distance from center to focal point
     speed:  speed (earth ratio)
     angle:  angle (degrees)
     peri:   perihelion distance

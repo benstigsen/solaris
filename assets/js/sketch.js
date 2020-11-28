@@ -43,7 +43,7 @@ function setup()
   {
     let planet    = planets[i];
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
-    planet.focus  = getFocusPoint(planet);
+    planet.ae  = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet.a);
     planet.x      = planet.a;
     planet.y      = 0;
@@ -62,7 +62,7 @@ function update(dt)
     let planet = planets[i];
 
     let angle = planet.angle;
-    let focus = planet.focus;
+    let focus = planet.ae;
     let e     = planet.e;
 
     //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
@@ -114,13 +114,13 @@ function draw()
 
     // Planet with a minimum radius of 5 pixels
     circle(
-      (planet.focus * zoom) + (planet.x * zoom),
+      (planet.ae * zoom) + (planet.x * zoom),
       planet.y * zoom, 
       Math.max(5, (planet.r * zoom))
     );
     
     noFill();
-    ellipse(planet.focus * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
+    ellipse(planet.ae * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
   }
 
   strokeWeight(1);
@@ -195,8 +195,8 @@ function draw()
     text(
       "Sum of focal point distances: " +
       (
-        getDistance(0, 0, p.x + p.focus, p.y) +
-        getDistance(p.focus * 2, 0, p.x + p.focus, p.y)
+        getDistance(0, 0, p.x + p.ae, p.y) +
+        getDistance(p.ae * 2, 0, p.x + p.ae, p.y)
       ).toFixed(2) +
       " x 10^6 km",
       x + 3, y + 190
@@ -204,13 +204,13 @@ function draw()
     
     // Draw focus points and lines
     circle(0, 0, 5);
-    circle(p.focus * 2 * zoom, 0, 5);
+    circle(p.ae * 2 * zoom, 0, 5);
     
-    x = (p.x * zoom) + (p.focus * zoom);
+    x = (p.x * zoom) + (p.ae * zoom);
     y = p.y * zoom;
 
     line(0, 0, x, y);
-    line(p.focus * 2 * zoom, 0, x, y);
+    line(p.ae * 2 * zoom, 0, x, y);
   }
 
   if (hohmannCheckbox.checked())
@@ -220,7 +220,7 @@ function draw()
     
     // Earth point
     fill(earth.color);
-    circle(-(earth.peri * zoom) - (earth.focus * zoom) + (3 * zoom), 0, 10);
+    circle(-(earth.peri * zoom) - (earth.ae * zoom) + (3 * zoom), 0, 10);
     
     // Transfer Line
     noFill();
