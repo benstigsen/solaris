@@ -62,7 +62,6 @@ function update(dt)
     let planet = planets[i];
 
     let angle = planet.angle;
-    let focus = planet.ae;
     let e     = planet.e;
 
     //angle = (angle + ((speedMultiplier * planet.v))) % 360;
@@ -70,11 +69,9 @@ function update(dt)
 
     // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
-    let x = r * cos(angle);
-    let y = r * sin(angle);
 
-    planet.x = x + focus;
-    planet.y = y;
+    planet.x = (r * cos(angle)) + planet.ae;
+    planet.y = (r * sin(angle));
     planet.angle = angle;
   }
 }
