@@ -215,8 +215,8 @@ function draw()
 
   if (hohmannCheckbox.checked())
   {
-    let v = p5.Vector.fromAngle(radians(44), (mars.a - 15));
-    line(0, 0, -v.x * zoom, v.y * zoom);
+    let angle = p5.Vector.fromAngle(radians(44), (mars.a - 15));
+    line(0, 0, -angle.x * zoom, angle.y * zoom);
     
     // Earth point
     fill(earth.color);
@@ -239,6 +239,6 @@ function draw()
     // Mars points
     fill(mars.color);
     circle((mars.aphe * zoom) - (2 * zoom), 0, 5);
-    circle(-v.x * zoom, v.y * zoom, 8);
+    circle(-angle.x * zoom, angle.y * zoom, 8);
   }
 }
