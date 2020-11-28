@@ -172,7 +172,7 @@ planets = [
   uranus, neptune, pluto
 ];
 
-// Dictionary of reference to each planet index in array
+// Dictionary of references to each planet index in array
 planetsRef = {}
 for (let i = 0; i < planets.length; i++)
 {
