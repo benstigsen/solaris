@@ -9,7 +9,7 @@
     T:      period (years)
     au:     astronomical units
     ae:     distance from center to focal point
-    speed:  speed (earth ratio)
+    v:      velocity (earth ratio)
     angle:  angle (degrees)
     peri:   perihelion distance
     aphe:   aphelion distance
@@ -54,13 +54,13 @@ function getFocusPoint(planet)
 
 function getHohmannTransfer(planet1, planet2)
 {
-  let avgAu = (planet1.au + planet2.au) / 2;
-  let transferTime = getPeriod(avgAu);
-  let transferTimeDays = getPeriodDays(transferTime);
-  let planetTimeDays = getPeriodDays(planet2.T);
-  let degreesPerDay = 360 / planetTimeDays;
-  let degreesMoved = degreesPerDay * (transferTimeDays / 2);
-  let degreesAtLaunch = 180 - degreesMoved;
+  let avgAu             = (planet1.au + planet2.au) / 2;
+  let transferTime      = getPeriod(avgAu);
+  let transferTimeDays  = getPeriodDays(transferTime);
+  let planetTimeDays    = getPeriodDays(planet2.T);
+  let degreesPerDay     = 360 / planetTimeDays;
+  let degreesMoved      = degreesPerDay * (transferTimeDays / 2);
+  let degreesAtLaunch   = 180 - degreesMoved;
 
   return {
     "transferTime": transferTimeDays / 2,
