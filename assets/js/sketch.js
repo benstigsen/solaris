@@ -36,17 +36,7 @@ function setup()
   addHohmannTransferToggle();
   addZoomButtons();
 
-  // Scale sun
-  sun.r = sun.r * SCALE_RADIUS
-
-  // Scale planet size and major axis
-  for (let i = 0; i < planets.length; i++)
-  {
-    let planet  = planets[i];
-    planet.a    = planet.a * SCALE_MAJOR_AXIS;
-    planet.r    = Math.ceil(((planet.d / 2) * SCALE_RADIUS) * 50);
-    planet.T    = getPeriod(planet.au);
-  }
+  togglePlanetSize();
 
   // Set planet values
   for (let i = 0; i < planets.length; i++)
