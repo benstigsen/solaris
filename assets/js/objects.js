@@ -37,7 +37,7 @@ function getAphelion(a, e)
 function getAstronomicalUnit(a)
 {return a / earth.a;}
 
-function getEarthSpeedRatio(a)
+function getEarthVelocityRatio(a)
 {
   let ratio = earth.a / a;
   return Math.sqrt(ratio * ratio * ratio);

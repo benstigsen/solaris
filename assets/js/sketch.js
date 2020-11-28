@@ -44,7 +44,7 @@ function setup()
     let planet    = planets[i];
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
     planet.ae     = getFocusPoint(planet);
-    planet.speed  = getEarthSpeedRatio(planet.a);
+    planet.v      = getEarthVelocityRatio(planet.a);
     planet.x      = planet.a;
     planet.y      = 0;
     planet.peri   = getPerihelion(planet.a, planet.e);
@@ -65,8 +65,8 @@ function update(dt)
     let focus = planet.ae;
     let e     = planet.e;
 
-    //angle = (angle + ((speedMultiplier * planet.speed))) % 360;
-    angle = (angle - ((speedMultiplier * planet.speed) * (dt / 1000))) % 360;
+    //angle = (angle + ((speedMultiplier * planet.v))) % 360;
+    angle = (angle - ((speedMultiplier * planet.v) * (dt / 1000))) % 360;
 
     // Calculate new x and y position
     let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
