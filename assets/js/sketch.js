@@ -43,7 +43,7 @@ function setup()
   {
     let planet    = planets[i];
     planet.b      = getSemiMinorAxis(planet.a, planet.e);
-    planet.ae  = getFocusPoint(planet);
+    planet.ae     = getFocusPoint(planet);
     planet.speed  = getEarthSpeedRatio(planet.a);
     planet.x      = planet.a;
     planet.y      = 0;
