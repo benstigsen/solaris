@@ -52,17 +52,20 @@ function getSemiMinorAxis(a, e)
 function getFocusPoint(planet)
 {return planet.a * planet.e;}
 
-function getAngleAtHohmannTransfer(planet1, planet2)
+function getHohmannTransfer(planet1, planet2)
 {
   let avgAu = (planet1.au + planet2.au) / 2;
   let transferTime = getPeriod(avgAu);
   let transferTimeDays = getPeriodDays(transferTime);
-  let orbitTimeDays = getPeriodDays(mars.T);
-  let degreesPerDay = 360 / orbitTimeDays;
+  let planetTimeDays = getPeriodDays(planet2.T);
+  let degreesPerDay = 360 / planetTimeDays;
   let degreesMoved = degreesPerDay * (transferTimeDays / 2);
-  let degreesAtArrival = 180;
-  let degreesAtLaunch = degreesAtArrival - degreesMoved;
-  return degreesAtLaunch;
+  let degreesAtLaunch = 180 - degreesMoved;
+
+  return {
+    "transferTime": transferTimeDays / 2,
+    "degreesAtLaunch": degreesAtLaunch
+  }
 }
 
 sun = {
