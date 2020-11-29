@@ -224,10 +224,10 @@ function draw()
     strokeWeight(2);
     stroke("#FF0000");
     bezier(
-      -(earth.peri * zoom), 0, 
-      -(earth.peri * zoom), mars.a * zoom, 
-      (mars.aphe * zoom), mars.a * zoom,
-      (mars.aphe * zoom) - (2 * zoom), 0
+      -(earth.peri * zoom), 0,              // x1, y1
+      -(earth.peri * zoom), mars.a * zoom,  // x2, y2
+      (mars.aphe * zoom),   mars.a * zoom,  // x3, y3
+      (mars.aphe * zoom) - (2 * zoom), 0    // x4, y4
     );
 
     stroke("#000000");
