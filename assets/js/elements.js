@@ -71,9 +71,7 @@ function addPlanetSelectionOptions()
   planetSelection.position(30, 230);
 
   for (let i = 0; i < planets.length; i++)
-  {
-    planetSelection.option(planets[i].name);
-  }
+  {planetSelection.option(planets[i].name);}
 }
 
 function addZoomButtons()
