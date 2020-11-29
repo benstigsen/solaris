@@ -7,17 +7,13 @@ function decrementZoom()
 function togglePlanetSize()
 {
   let choice = planetSize.value();
+  let value;
 
-  if (choice == "50x") 
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].r = planets[i].r * 50;}
-  }
-  else if (choice == "Real Size")
-  {
-    for (let i = 0; i < planets.length; i++)
-    {planets[i].r = planets[i].r / 50;}
-  }
+  if      (choice == "50x")       {value = 50;}
+  else if (choice == "Real Size") {value = 0.02;}
+
+  for (let i = 0; i < planets.length; i++)
+  {planets[i].r = planets[i].r * value;}
 }
 
 function changeOrbitalTime()
