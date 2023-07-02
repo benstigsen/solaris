@@ -14,8 +14,8 @@ function togglePlanetSize() {
 
   value = (choice == "50x" ? 50 : 0.02);
 
-  for (let i = 0; i < planets.length; i++) {
-    planets[i].r = planets[i].r * value;
+  for (let [_, planet] of planets) {
+    planet.r = planet.r * value;
   }
 }
 
@@ -63,8 +63,8 @@ function addPlanetSelectionOptions() {
   planetSelection.option("All Planets");
   planetSelection.position(30, 230);
 
-  for (let i = 0; i < planets.length; i++) {
-    planetSelection.option(planets[i].name);
+  for (let [name, _] of planets) {
+    planetSelection.option(name);
   }
 }
 

@@ -20,13 +20,12 @@ let hohmannCheckbox;
 
 // Resize the canvas on window resize
 function windowResized() {
-  CENTER = {x: (windowWidth / 2), y: (windowHeight / 2)};
+  center = {x: (windowWidth / 2), y: (windowHeight / 2)};
   resizeCanvas(windowWidth - 50, windowHeight - 50);
 }
 
 // Function to handle setup
-function setup()
-{ 
+function setup() {
   // Center canvas
   createCanvas(windowWidth, windowHeight).position(PADDING / 2, PADDING / 2);
   windowResized();
@@ -44,9 +43,7 @@ function setup()
   togglePlanetSize();
 
   // Set planet values
-  for (let i = 0; i < planets.length; i++)
-  {
-    let planet   = planets[i];
+  for (let [name, planet] of planets) {
     planet.b     = getSemiMinorAxis(planet.a, planet.e);
     planet.ae    = getFocusPoint(planet);
     planet.v     = getEarthVelocityRatio(planet.a);
@@ -59,13 +56,9 @@ function setup()
 }
 
 // Function to handle logic
-function update(dt)
-{
+function update(dt) {
   // Calculate new planet position and angle
-  for (let i = 0; i < planets.length; i++)
-  {
-    let planet = planets[i];
-
+  for (let [_, planet] of planets) {
     let angle = planet.angle;
     let e     = planet.e;
 
@@ -81,9 +74,22 @@ function update(dt)
   }
 }
 
+function drawPlanet(planet) {
+  fill(planet.color);
+
+  // Planet with a minimum radius of 5 pixels
+  circle(
+    (planet.ae * zoom) + (planet.x * zoom),
+    planet.y * zoom, 
+    Math.max(5, (planet.r * zoom))
+  );
+
+  noFill();
+  ellipse(planet.ae * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
+}
+
 // Function to handle drawing
-function draw()
-{
+function draw() {
   // Handle logic
   update(deltaTime);
 
@@ -95,52 +101,29 @@ function draw()
   text((+zoom).toFixed(1), 46, 40);
 
   // Translate everything from center of screen
-  translate(CENTER.x, CENTER.y)
-
-  // Draw the planets
-  let selectedPlanet = undefined;
-  let i = 0;
-  let max = planets.length;
-
-  if (planetSelection.value() != "All Planets") 
-  {
-    i = planetsRef[planetSelection.value()];
-    max = i + 1;
-    selectedPlanet = planets[i];
-  }
-
-  for (i; i < max; i++)
-  {
-    let planet = planets[i];
-    fill(planet.color);
-
-    // Planet with a minimum radius of 5 pixels
-    circle(
-      (planet.ae * zoom) + (planet.x * zoom),
-      planet.y * zoom, 
-      Math.max(5, (planet.r * zoom))
-    );
-    
-    noFill();
-    ellipse(planet.ae * zoom, 0, (planet.a * 2) * zoom, (planet.b * 2) * zoom);
-  }
+  translate(center.x, center.y)
 
   strokeWeight(1);
 
   // Draw sun
   fill(sun.color);
   circle(0, 0, sun.r * zoom);
+  
+  // Draw the planets
+  let selectedPlanet = planets.get(planetSelection.value());
 
+  if (selectedPlanet == undefined) {
+    for (let [_, planet] of planets) {
+      drawPlanet(planet);
+    }
   // Draw focus points and lines if a specific planet has been selected
-  if (selectedPlanet != undefined)
-  {
+  } else {
     let p = selectedPlanet;
-    let x;
-    let y;
+    drawPlanet(p);
 
     // Draw information box
-    x = -CENTER.x + 250;
-    y = -CENTER.y + 10;
+    let x = -center.x + 250;
+    let y = -center.y + 10;
     fill("#FFFFFF");
     rect(x, y, 275, 200);
 
@@ -149,65 +132,23 @@ function draw()
     textSize(16);
     text(p.name, x + 3, y + 15);
     textSize(12);
-    
+
     // Planet information
-    text(
-      "Semi-major axis: " + (+p.a).toFixed(2) + 
-      " x 10^6 km", 
-      x + 3, y + 40
-    );
-    
-    text(
-      "Semi-minor axis: " + (+p.b).toFixed(2) + " x 10^6 km", 
-      x + 3, y + 55
-    );
+    text(`Semi-major axis: ${p.a.toFixed(2)} x 10^6 km`, x + 3, y + 40);
+    text(`Semi-minor axis: ${p.b.toFixed(2)} x 10^6 km`, x + 3, y + 55);
+    text(`Perihelion: ${p.peri.toFixed(2)} x 10^6 km`, x + 3, y + 75);
+    text(`Aphelion: ${p.aphe.toFixed(2)} x 10^6 km`, x + 3, y + 90);
+    text(`Eccentricity: ${p.e.toFixed(4)}`, x + 3, y + 115);
+    text(`Orbital period (Earth days): ${getPeriodDays(p.T).toFixed(2)}`, x + 3, y + 140);
+    text(`Current angle (from center): ${Math.abs(p.angle.toFixed(4))}`, x + 3, y + 165);
 
-    text(
-      "Perihelion: " + 
-      (+p.peri).toFixed(2) + 
-      " x 10^6 km", 
-      x + 3, y + 75
-    );
+    let focalSum = getDistance(0, 0, p.x + p.ae, p.y) + getDistance(p.ae * 2, 0, p.x + p.ae, p.y);
+    text(`Sum of focal point distances: ${focalSum.toFixed(2)} x 10^6 km`, x + 3, y + 190);
 
-    text(
-      "Aphelion: " + 
-      (+p.aphe).toFixed(2) + 
-      " x 10^6 km", 
-      x + 3, y + 90
-    );
-
-    text(
-      "Eccentricity: " + 
-      p.e.toFixed(4), 
-      x + 3, y + 115
-    );
-
-    text(
-      "Orbital period (Earth days): " + 
-      getPeriodDays(p.T).toFixed(2), 
-      x + 3, y + 140
-    );
-
-    text(
-      "Current angle (from center): " + 
-      Math.abs(p.angle.toFixed(4)), 
-      x + 3, y + 165
-    );
-
-    text(
-      "Sum of focal point distances: " +
-      (
-        getDistance(0, 0, p.x + p.ae, p.y) +
-        getDistance(p.ae * 2, 0, p.x + p.ae, p.y)
-      ).toFixed(2) +
-      " x 10^6 km",
-      x + 3, y + 190
-    );
-    
     // Draw focus points and lines
     circle(0, 0, 5);
     circle(p.ae * 2 * zoom, 0, 5);
-    
+
     x = (p.x * zoom) + (p.ae * zoom);
     y = p.y * zoom;
 
@@ -215,15 +156,14 @@ function draw()
     line(p.ae * 2 * zoom, 0, x, y);
   }
 
-  if (hohmannCheckbox.checked())
-  {
+  if (hohmannCheckbox.checked()) {
     let angle = p5.Vector.fromAngle(radians(44), (mars.a - 15));
     line(0, 0, -angle.x * zoom, angle.y * zoom);
-    
+
     // Earth point
     fill(earth.color);
     circle(-(earth.peri * zoom) - (earth.ae * zoom) + (3 * zoom), 0, 10);
-    
+
     // Transfer Line
     noFill();
     strokeWeight(2);
