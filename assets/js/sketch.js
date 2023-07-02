@@ -1,7 +1,3 @@
-const WIDTH             = window.innerWidth - 50;
-const HEIGHT            = window.innerHeight - 50;
-const CENTER            = {x: (WIDTH / 2), y: (HEIGHT / 2)};
-
 const SCALE_RADIUS      = 1 / 10000;
 const SCALE_INCREASE    = 0.1;
 const SCALE_MIN         = 0.1;
@@ -10,8 +6,11 @@ const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 
 const G                 = 6.67430;
 
-let speedMultiplier     = 360 / 15; // 15 second orbit
-let zoom                = 1.0;
+const PADDING = 50;
+let center = {x: 0, y: 0};
+
+let speedMultiplier = 360 / 15; // 15 second orbit
+let zoom            = 1.0;
 
 // Interactive controls
 let orbitalTime;
@@ -19,12 +18,18 @@ let planetSize;
 let planetSelection;
 let hohmannCheckbox;
 
+// Resize the canvas on window resize
+function windowResized() {
+  CENTER = {x: (windowWidth / 2), y: (windowHeight / 2)};
+  resizeCanvas(windowWidth - 50, windowHeight - 50);
+}
+
 // Function to handle setup
 function setup()
 { 
   // Center canvas
-  createCanvas(WIDTH, HEIGHT)
-    .position((windowWidth - WIDTH) / 2, (windowHeight - HEIGHT) / 2);
+  createCanvas(windowWidth, windowHeight).position(PADDING / 2, PADDING / 2);
+  windowResized();
 
   // Change angle mode to degrees
   angleMode(DEGREES);
@@ -41,14 +46,14 @@ function setup()
   // Set planet values
   for (let i = 0; i < planets.length; i++)
   {
-    let planet    = planets[i];
-    planet.b      = getSemiMinorAxis(planet.a, planet.e);
-    planet.ae     = getFocusPoint(planet);
-    planet.v      = getEarthVelocityRatio(planet.a);
-    planet.peri   = getPerihelion(planet.a, planet.e);
-    planet.aphe   = getAphelion(planet.a, planet.e);
-    planet.x      = planet.a;
-    planet.y      = 0;
+    let planet   = planets[i];
+    planet.b     = getSemiMinorAxis(planet.a, planet.e);
+    planet.ae    = getFocusPoint(planet);
+    planet.v     = getEarthVelocityRatio(planet.a);
+    planet.peri  = getPerihelion(planet.a, planet.e);
+    planet.aphe  = getAphelion(planet.a, planet.e);
+    planet.x     = planet.a;
+    planet.y     = 0;
     planet.angle = 0;
   }
 }

@@ -1,43 +1,39 @@
-function incrementZoom()
-{if (zoom < SCALE_MAX) {zoom = (+zoom + SCALE_INCREASE).toFixed(1);}}
+function incrementZoom() {
+  if (zoom < SCALE_MAX) {zoom = (+zoom + SCALE_INCREASE).toFixed(1);}
+}
 
-function decrementZoom()
-{if (zoom > SCALE_MIN) {zoom = (+zoom - SCALE_INCREASE).toFixed(1);}}
+function decrementZoom() {
+  if (zoom > SCALE_MIN) {zoom = (+zoom - SCALE_INCREASE).toFixed(1);}
+}
 
-function togglePlanetSize()
-{
+function togglePlanetSize() {
   let choice = planetSize.value();
   let value;
 
   if      (choice == "50x")       {value = 50;}
   else if (choice == "Real Size") {value = 0.02;}
 
-  for (let i = 0; i < planets.length; i++)
-  {planets[i].r = planets[i].r * value;}
+  for (let i = 0; i < planets.length; i++) {
+    planets[i].r = planets[i].r * value;
+  }
 }
 
-function changeOrbitalTime()
-{
+const orbitalTimeOptions = new Map([
+  ["1 Year (Real Time)", 365.256 * 86400],
+  ["1 Day (365x)", 86400],
+  ["1 Hour (8,766x)", 3600],
+  ["5 Minutes (105,192x)", 5 * 60],
+  ["15 Seconds (2,045,433x)", 15],
+  ["3 Seconds (10,227,165x)", 3],
+  ["1 Second (30,681,495x)", 1]
+]);
+
+function changeOrbitalTime() {
   let choice = orbitalTime.value();
-
-  if      (choice == "1 Year (Real Time)")
-  {speedMultiplier = 360 / (365.256 * 86400);}
-  else if (choice == "1 Day (365x)")
-  {speedMultiplier = 360 / 86400;}
-  else if (choice == "1 Hour (8,766x)")
-  {speedMultiplier = 360 / 3600;}
-  else if (choice == "5 Minutes (105,192x)")
-  {speedMultiplier = 360 / (5 * 60);}
-  else if (choice == "15 Seconds (2,045,433x)")
-  {speedMultiplier = 360 / 15;}
-  else if (choice == "3 Seconds (10,227,165x)")
-  {speedMultiplier = 360 / 3;}
-  else if (choice == "1 Second (30,681,495x)")
-  {speedMultiplier = 360 / 1;}
+  speedMultiplier = 360 / orbitalTimeOptions.get(choice);
 }
 
-function addPlanetSizeOptions()
-{
+function addPlanetSizeOptions() {
   createP("Planet Size").position(30, 75);
   planetSize = createSelect();
   planetSize.option("Real Size");
@@ -47,42 +43,37 @@ function addPlanetSizeOptions()
   planetSize.changed(togglePlanetSize);
 }
 
-function addOrbitalTimeOptions()
-{
+function addOrbitalTimeOptions() {
   createP("Orbital Time (Earth)").position(30, 135);
   orbitalTime = createSelect();
-  orbitalTime.option("1 Year (Real Time)");
-  orbitalTime.option("1 Day (365x)");
-  orbitalTime.option("1 Hour (8,766x)");
-  orbitalTime.option("5 Minutes (105,192x)");
-  orbitalTime.option("15 Seconds (2,045,433x)");
-  orbitalTime.option("3 Seconds (10,227,165x)");
-  orbitalTime.option("1 Second (30,681,495x)");
+
+  for (let key of orbitalTimeOptions.keys()) {
+    orbitalTime.option(key);
+  }
+
   orbitalTime.selected("15 Seconds (2,045,433x)");
   orbitalTime.position(30, 170);
   orbitalTime.changed(changeOrbitalTime);
 }
 
-function addPlanetSelectionOptions()
-{
+function addPlanetSelectionOptions() {
   createP("Planet Selection").position(30, 195);
   planetSelection = createSelect();
   planetSelection.option("All Planets");
   planetSelection.position(30, 230);
 
-  for (let i = 0; i < planets.length; i++)
-  {planetSelection.option(planets[i].name);}
+  for (let i = 0; i < planets.length; i++) {
+    planetSelection.option(planets[i].name);
+  }
 }
 
-function addZoomButtons()
-{
+function addZoomButtons() {
   createP("Zoom Level").position(30, 15);
   createButton('+').mousePressed(incrementZoom).position(30, 50);
   createButton('-').mousePressed(decrementZoom).position(100, 50);
 }
 
-function addHohmannTransferToggle()
-{
+function addHohmannTransferToggle() {
   hohmannCheckbox = createCheckbox('Show Hohmann transfer', false);
   hohmannCheckbox.position(25, 290);
 }
