@@ -1,17 +1,18 @@
 function incrementZoom() {
-  if (zoom < SCALE_MAX) {zoom = (+zoom + SCALE_INCREASE).toFixed(1);}
+  zoom += (zoom < SCALE_MAX ? SCALE_INCREASE : 0);
+  zoom = +zoom.toFixed(1);
 }
 
 function decrementZoom() {
-  if (zoom > SCALE_MIN) {zoom = (+zoom - SCALE_INCREASE).toFixed(1);}
+  zoom -= (zoom > SCALE_MIN ? SCALE_INCREASE : 0);
+  zoom = +zoom.toFixed(1);
 }
 
 function togglePlanetSize() {
   let choice = planetSize.value();
   let value;
 
-  if      (choice == "50x")       {value = 50;}
-  else if (choice == "Real Size") {value = 0.02;}
+  value = (choice == "50x" ? 50 : 0.02);
 
   for (let i = 0; i < planets.length; i++) {
     planets[i].r = planets[i].r * value;
