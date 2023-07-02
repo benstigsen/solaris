@@ -111,10 +111,10 @@ let planetList = [
     name:  "Earth",
   },
   {
-    a:     227_920_000 * SCALE_MAJOR_AXIS,
+    a:     227_956_000 * SCALE_MAJOR_AXIS,
     e:     0.094,
-    au:    1.52,
-    T:     getPeriod(1.52),
+    au:    1.524,
+    T:     getPeriod(1.524),
     r:     3396 * SCALE_RADIUS,
     color: "#FF7F00",
     name:  "Mars",
