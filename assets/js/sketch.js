@@ -4,19 +4,13 @@ const SCALE_MIN         = 0.1;
 const SCALE_MAX         = 2.5;
 const SCALE_MAJOR_AXIS  = 1 / 1_000_000;
 
-const G                 = 6.67430;
+const G = 6.67430;
 
 const PADDING = 50;
 let center = {x: 0, y: 0};
 
 let speedMultiplier = 360 / 15; // 15 second orbit
-let zoom            = 1.0;
-
-// Interactive controls
-let orbitalTime;
-let planetSize;
-let planetSelection;
-let hohmannCheckbox;
+let zoom = 1.0;
 
 // Resize the canvas on window resize
 function windowResized() {
@@ -43,7 +37,7 @@ function setup() {
   togglePlanetSize();
 
   // Set planet values
-  for (let [name, planet] of planets) {
+  for (let [_, planet] of planets) {
     planet.b     = getSemiMinorAxis(planet.a, planet.e);
     planet.ae    = getFocusPoint(planet);
     planet.v     = getEarthVelocityRatio(planet.a);
@@ -59,18 +53,14 @@ function setup() {
 function update(dt) {
   // Calculate new planet position and angle
   for (let [_, planet] of planets) {
-    let angle = planet.angle;
-    let e     = planet.e;
-
     //angle = (angle + ((speedMultiplier * planet.v))) % 360;
-    angle = (angle - ((speedMultiplier * planet.v) * (dt / 1000))) % 360;
+    planet.angle = (planet.angle - ((speedMultiplier * planet.v) * (dt / 1000))) % 360;
 
     // Calculate new x and y position
-    let r = (planet.a * (1 - (e * e))) / (1 + e * cos(angle));
+    let r = (planet.a * (1 - (planet.e * planet.e))) / (1 + planet.e * cos(planet.angle));
 
-    planet.x = (r * cos(angle)) + planet.ae;
-    planet.y = (r * sin(angle));
-    planet.angle = angle;
+    planet.x = (r * cos(planet.angle)) + planet.ae;
+    planet.y = (r * sin(planet.angle));
   }
 }
 
@@ -157,6 +147,8 @@ function draw() {
   }
 
   if (hohmannCheckbox.checked()) {
+    let earth = planets.get("Earth");
+    let mars = planets.get("Mars");
     let angle = p5.Vector.fromAngle(radians(44), (mars.a - 15));
     line(0, 0, -angle.x * zoom, angle.y * zoom);
 

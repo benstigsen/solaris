@@ -1,5 +1,5 @@
 /*
-  Script for data and calculations related to planets / moons / suns
+  Script for data and calculations related to planets / moons / var suns
 
   Variables for each planet:
     a:      semi-major axis
@@ -76,7 +76,8 @@ function getHohmannTransfer(planet1, planet2) {
   }
 }
 
-sun = {
+// https://nssdc.gsfc.nasa.gov/planetary/factsheet/
+var sun = {
   r: 696_350 * SCALE_RADIUS,
   color: "#FFDD00"
 }
